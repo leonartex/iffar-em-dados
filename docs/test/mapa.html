@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Page Title</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <style>
+        .city path{
+            fill: green;
+            stroke: none;
+        }
+        .city circle{
+            fill: blue;
+        }
+
+        .city.selected path{
+            fill: red;
+        }
+        .city.selected circle{
+            fill: red;
+        }
+
+        li.selected{
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <div id="units-list">
+        <!--Função para criar listas conformes os tipos existentes de unidades nos dados. Faz algum parangolé para decidir a principal (pode ser setar manualmente, e.g.: campus com reitoria)-->
+        <div>
+            Mostrar centros de referência e polos de ensino à distância
+        </div>
+        <ul id="campus-list">
+            <!--Função para adicionar as unidades-->
+        </ul>
+        <ul id="reference-center-list">
+            <li>...</li>
+        </ul>
+        <ul id="distance-edu-list">
+            <li>...</li>
+        </ul>
+    </div>
+
+
+    <svg width="550" height="500"></svg>
+
+    <script src="https://d3js.org/d3.v6.min.js" defer></script>
+    <!-- <script src="https://d3js.org/d3-scale-chromatic.v3.min.js" defer></script> -->
+    <!-- <script src="https://d3js.org/d3-geo-projection.v4.min.js" defer></script> -->   
+    <script src="https://cdn.jsdelivr.net/npm/@turf/turf@6/turf.min.js" defer></script>
+    <script src="./app.js" defer></script>
+</body>
+</html>
