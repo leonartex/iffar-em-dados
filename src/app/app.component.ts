@@ -278,7 +278,7 @@ export class AppComponent {
     //Crio os labels
     racialDistributionChart.labels = [...new Set(racialDistribution.map(racialDistEl => racialDistEl.description))].sort();
     
-    //Faço o label de informação não declarada ficar por último
+    //Faço o label de informação não declarada ficar por último. Fonte: https://stackoverflow.com/questions/24909371/move-item-in-array-to-last-position
     racialDistributionChart.labels.push(racialDistributionChart.labels.splice(racialDistributionChart.labels.indexOf('NÃO DECLARADA'), 1)[0]);
     console.log(racialDistributionChart.labels);
 
