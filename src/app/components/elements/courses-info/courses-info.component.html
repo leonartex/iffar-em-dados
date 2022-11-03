@@ -1,0 +1,26 @@
+<h2>Cursos</h2>
+<app-card *ngFor="let card of general.cards" [cardData] = "card"></app-card>
+
+<h3>Técnico</h3>
+<app-card *ngFor="let card of technical.cards" [cardData] = "card"></app-card>
+<ul>
+    <li *ngFor="let card of technical.courses">
+        <app-card [cardData]="card"></app-card>
+    </li>
+</ul>
+
+<h3>Graduação</h3>
+<app-card *ngFor="let card of graduation.cards" [cardData] = "card"></app-card>
+<ul>
+    <li *ngFor="let card of graduation.courses">
+        <app-card [cardData]="card"></app-card>
+    </li>
+</ul>
+
+<h3>Pós-graduação</h3>
+<app-card *ngFor="let card of postGraduation.cards" [cardData] = "card"></app-card>
+<ul>
+    <li *ngFor="let card of postGraduation.courses">
+        <app-card [cardData]="card"></app-card>
+    </li>
+</ul>

@@ -1,0 +1,14 @@
+<div *ngIf="courseInfo">
+    <h2>{{courseInfo.courseDetailing.pnpName}}</h2>
+    <div *ngFor="let rateCard of processedInfo[2].rateCards">
+        <span>{{rateCard.description}}</span> - 
+        <span>{{rateCard.value}}</span>
+    </div>
+    <!-- <app-bar-chart [data] = "data1"></app-bar-chart> -->
+    <!-- <app-bar-chart [data] = "data2"> </app-bar-chart> -->
+    <!-- <app-bar-chart [data] = "data3"> </app-bar-chart> -->
+    <!-- <app-bar-chart [data] = "data4"> </app-bar-chart> -->
+    <!-- <app-bar-chart [data] = "data5"> </app-bar-chart> -->
+    <app-bar-chart [data] = "data6"> </app-bar-chart>
+</div>
+ÉEEEE
