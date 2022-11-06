@@ -1,15 +1,15 @@
 export class RateCards{
-    enrolledStudents: number = 0;
+    enrolledStudents: number | null = null;
 
     apiIncomingStudents: number = 0;
-    pnpIncomingStudents: number = 0;
+    pnpIncomingStudents: number | null = null;
 
     concludingStudents: {
-        concluded: number,
-        integralized: number
+        concluded: number | null,
+        integralized: number | null
     } = {
-        concluded: 0,
-        integralized: 0
+        concluded: null,
+        integralized: null
     };
     dropoutStudents: any
 }

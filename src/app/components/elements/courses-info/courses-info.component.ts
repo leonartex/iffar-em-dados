@@ -46,9 +46,9 @@ export class CoursesInfoComponent implements OnInit {
   /** Aqui é onde a informação realmente é processada, sendo filtrada em suas específicas categorias antes de passar por este método
    * 
    * @param coursesInfo 
-   * @param type geral; técnico; graduação; pós
+   * @param type geral; técnico; graduação; pós-graduação
    */
-  public processCoursesInfo(coursesInfo: Array<CoursesInfo>, type: string = 'geral'): ProcessedCoursesInfo{
+  public processCoursesInfo(coursesInfo: Array<CoursesInfo>, type: string = 'geral'): ProcessedCoursesInfo {
     let processedCoursesInfo: ProcessedCoursesInfo = new ProcessedCoursesInfo;
     processedCoursesInfo.type = type;
 
@@ -59,7 +59,7 @@ export class CoursesInfoComponent implements OnInit {
     processedCoursesInfo.knowledgeAreas = this.mountKnowledgeAreaGraph(coursesInfo);
     console.log(processedCoursesInfo.knowledgeAreas)
 
-    if(type != 'geral'){
+    if (type != 'geral') {
       //Se não for um processamento de cursos do tipo geral, então crio os cards de cursos para o nível indicado
       let coursesCards = this.mountCoursesCards(coursesInfo);
       processedCoursesInfo.courses = coursesCards;
@@ -69,52 +69,67 @@ export class CoursesInfoComponent implements OnInit {
   }
 
   //Função auxiliar para criar os cards gerais
-  private mountMainCards(coursesInfo: Array<CoursesInfo>, type: string = 'geral'): Array<Card>{
+  private mountMainCards(coursesInfo: Array<CoursesInfo>, type: string = 'geral'): Array<Card> {
     //Crio uma lista de cursos que possuem nome da PNP definido. Isso significa que o curso possui os dados da PNP, sendo usado para definir se realizará as operações dependentes da PNP
     let pnpCourses = coursesInfo.filter(course => course.pnpName != null);
 
     //Crio o conjunto de cards
     let offeredCoursesCard: Card = new Card;
     //Monto o card de cursos ofertados
-    offeredCoursesCard.description = 'Cursos ofertados',
-    offeredCoursesCard.value = coursesInfo.reduce((total, current) => total += 1, 0)
+    offeredCoursesCard.description = 'Cursos ofertados';
+    if (coursesInfo.length == 0)
+      offeredCoursesCard.value = 0
+    else
+      offeredCoursesCard.value = coursesInfo.reduce((total, current) => total += 1, 0)
 
     let offeredSlotsCard: Card;
     offeredSlotsCard = new Card;
     offeredSlotsCard.description = 'Vagas ofertadas';
-    if(pnpCourses.length > 0){
-      offeredSlotsCard.value = pnpCourses.reduce((total, current) =>{
-        if(current.courseSlots != null)
-          total += current.courseSlots
-        return total
-      }, 0)
-    }else{
-      offeredSlotsCard.value = null;
+    if (coursesInfo.length == 0)
+      offeredSlotsCard.value = 0
+    else {
+      if (pnpCourses.length > 0) {
+        offeredSlotsCard.value = pnpCourses.reduce((total, current) => {
+          if (current.courseSlots != null)
+            total += current.courseSlots
+          return total
+        }, 0)
+      } else {
+        offeredSlotsCard.value = null;
+      }
     }
 
     let enrolledStudentsCard: Card;
     enrolledStudentsCard = new Card;
     enrolledStudentsCard.description = 'Alunos matriculados';
-    if(pnpCourses.length > 0){
-      enrolledStudentsCard.value = pnpCourses.reduce((total, current) =>{
-        if(current.enrolledStudents != null)
-          total += current.enrolledStudents
-        return total
-      }, 0)
-    }else{
-      enrolledStudentsCard.value = null;
+    if (coursesInfo.length == 0)
+      enrolledStudentsCard.value = 0
+    else {
+      if (pnpCourses.length > 0) {
+        enrolledStudentsCard.value = pnpCourses.reduce((total, current) => {
+          if (current.enrolledStudents != null)
+            total += current.enrolledStudents
+          return total
+        }, 0)
+      } else {
+        enrolledStudentsCard.value = null;
+      }
     }
+
 
     //Alunos ingressantes é um card sempre definido, pois não depende apenas da PNP
     let incomingStudentsCard: Card;
     incomingStudentsCard = new Card;
     incomingStudentsCard.description = 'Alunos ingressantes';
+    if (coursesInfo.length == 0)
+      incomingStudentsCard.value = 0
+    else
       incomingStudentsCard.value = coursesInfo.reduce((total, current) => total += current.incomingStudents, 0);
 
-    if(type == 'geral'){
+    if (type == 'geral') {
       // //Crio o addon específico dos cursos no geral (informa sobre o nível ao invés do grau)
       // let addon =  
-    }else{
+    } else {
       // //Crio o addon específico dos cursos para cada nível de curso (informa sobre o grau)
       // let addon =
     }
@@ -123,7 +138,7 @@ export class CoursesInfoComponent implements OnInit {
     return [offeredCoursesCard, offeredSlotsCard, enrolledStudentsCard, incomingStudentsCard];
   }
 
-  private mountTurnGraph(coursesInfo: Array<CoursesInfo>): BarChartData{
+  private mountTurnGraph(coursesInfo: Array<CoursesInfo>): BarChartData {
     let chartData = new BarChartData;
     //Crio a lista de labels
     chartData.labels = [...new Set(coursesInfo.map(course => course.turn))];
@@ -134,7 +149,7 @@ export class CoursesInfoComponent implements OnInit {
       backgroundColor: ['rgba(255, 99, 132)']
     }]
     //E depois percorro ela para contar quantos cursos possui cada um
-    for(let label of chartData.labels){
+    for (let label of chartData.labels) {
       let courses = coursesInfo.filter(course => course.turn == label);
       chartData.datasets[0].data.push(courses.length)
     }
@@ -142,7 +157,7 @@ export class CoursesInfoComponent implements OnInit {
     return chartData;
   }
 
-  private mountKnowledgeAreaGraph(coursesInfo: Array<CoursesInfo>): BarChartData{
+  private mountKnowledgeAreaGraph(coursesInfo: Array<CoursesInfo>): BarChartData {
     let chartData = new BarChartData;
     //Crio a lista de labels
     chartData.labels = [...new Set(coursesInfo.map(course => course.knowledgeArea))];
@@ -153,7 +168,7 @@ export class CoursesInfoComponent implements OnInit {
       backgroundColor: ['rgba(255, 99, 132)']
     }]
     //E depois percorro ela para contar quantos cursos possui cada um
-    for(let label of chartData.labels){
+    for (let label of chartData.labels) {
       let courses = coursesInfo.filter(course => course.knowledgeArea == label);
       chartData.datasets[0].data.push(courses.length)
     }
@@ -162,20 +177,20 @@ export class CoursesInfoComponent implements OnInit {
   }
 
   //Função auxiliar para criar a lista de cards dos cursos ofertados
-  private mountCoursesCards(coursesInfo: Array<CoursesInfo>): Array<Card>{
+  private mountCoursesCards(coursesInfo: Array<CoursesInfo>): Array<Card> {
     let coursesCards: Array<Card> = [];
 
-    for(let course of coursesInfo){
+    for (let course of coursesInfo) {
       //Faço o card para o curso da unidade de ensino
       let courseCard = new Card;
       courseCard.type = 'only-title';
-      
+
       //Crio o título com o nome do curso
-      if(course.pnpName != null)
+      if (course.pnpName != null)
         courseCard.description = course.pnpName;
       else
         courseCard.description = course.apiNameFiltered;
-      
+
       courseCard.filterProperty = course.degree;
 
       //Filtro os cursos que se encaixam como um mesmo curso numa lista com todos os cursos da instituição (todas as 5 características que identificam um curso iguais, exceto o nome da cidade) (será feito depois) (crio uma variável global com a lista de todos os cursos)

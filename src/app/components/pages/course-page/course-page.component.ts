@@ -129,7 +129,7 @@ export class CoursePageComponent implements OnInit {
     let concludingStudents = null;
     let concludingStudentsType = 'default';
     let concludingStudentsAdd = undefined;
-    if(rateCardsData.concludingStudents.concluded != null || rateCardsData.concludingStudents.integralized != null){
+    if(rateCardsData.concludingStudents.concluded != null && rateCardsData.concludingStudents.integralized != null){
       concludingStudents = rateCardsData.concludingStudents.concluded + rateCardsData.concludingStudents.integralized;
       concludingStudentsType = 'default-fixed-expanded';
       concludingStudentsAdd = [

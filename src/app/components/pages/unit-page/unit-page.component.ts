@@ -12,15 +12,23 @@ export class UnitPageComponent implements OnInit {
   
   public response: UnitPageResponse = new UnitPageResponse;
   public coursesInfo: any;
+  public projectsInfo: any;
+  public entryAndProgressInfo: any;
+  public studentsProfile: any;
 
   constructor(private http: HttpClient) {
     this.apiUrl = 'http://localhost:3333/api';
-    this.http.get<UnitPageResponse>(`${this.apiUrl}/unit/sao-borja`)
+    this.http.get<UnitPageResponse>(`${this.apiUrl}/unit/frederico-westphalen`)
     .subscribe(res => {
       console.log(res);
       this.response = res;
       this.coursesInfo = this.response.infoPerYear[0].coursesInfo;
-      console.log(this.coursesInfo);
+      this.projectsInfo = this.response.infoPerYear[0].projectsInfo;
+      this.projectsInfo = this.response.infoPerYear[0].projectsInfo;
+      this.entryAndProgressInfo = this.response.infoPerYear[0].entryAndProgressInfo;
+      this.studentsProfile = this.response.infoPerYear[0].studentsProfile;
+
+      console.log(this.response.infoPerYear[0].projectsInfo);
     })
   }
 
