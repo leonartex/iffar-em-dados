@@ -1,5 +1,9 @@
-<div>
-    <h3>{{cardData.value}}</h3>
-    <h3>{{cardData.description}}</h3>
-    <hr>
+<div class="card" [ngClass]="cardData.type">
+    <div class="main-content">
+        <h3 class="title"><span class="description">{{cardData.description}}<span class="visually-hidden">:</span></span> <span class="value">{{cardData.value}}</span></h3>
+    </div>
+    <div class="addon-content">
+        <div class="filler"></div>
+        ssss
+    </div>
 </div>

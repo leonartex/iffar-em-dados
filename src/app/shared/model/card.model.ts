@@ -20,11 +20,13 @@
 /** 
  * @param type default; only-title; small-upper-title; 
  * @param filterProperty uma propriedade opcional para adicionar algum valor qualquer para uma filtragem posterior na apresentação dos cards (ex.: adicionar o grau do curso para permitir estilizar o card de alguma maneira específica, como cor de fundo)
+ * @param level define o nível de heading utilizado para o card, por exemplo, utilizar h3 ou h4 no título do card
  */
 export class Card{
   description: string = '';
   value: string | number | null = null;
   type: string = 'default';
+  headLevel: string = '3';
   additionalInfo?: Array<any>;
   filterProperty?: string | number;
 }
