@@ -1,14 +1,17 @@
 @import 'src/sass/_variables';
 
 .card {
-    width: 8rem;
+    width: auto;
     margin: 5px;
+
+    position: relative;
 }
 
 .card .main-content {
     background-color: $iffar-green-darker;
     color: white;
 
+    position: relative;
     z-index: 12;
 }
 .card .addon-content{
@@ -18,10 +21,21 @@
     position: relative; //Deixo a posição como relative para poder usar absolute na tag filler
     z-index: 8;
 }
-.card .addon-content .filler{
-    background-color: $iffar-red;
+.card .filler{
+    background-color: $iffar-green;
 
+    position: absolute;
     z-index: 4;
+}
+
+.card.reverse .main-content {
+    background-color: $iffar-green;
+}
+.card.reverse .addon-content{
+    background-color: $iffar-green-darker;
+}
+.card.reverse .filler{
+    background-color: $iffar-green-darker;
 }
 
 .card .main-content .title {
@@ -36,44 +50,168 @@
 }
 
 /*Configurações do card do tipo default*/
-.card.default .main-content {
-    width: 8rem;
-    height: 8rem;
-    border-radius: 0.8rem; //Tem que ser 10% da largura ou altura (quadrado é tudo igual), se for um retângulo, preciso escolher a largura ou altura para fazer isso
+$height: 8rem;
+$percent: ($height * 0.1);
+.card.default{
+    .main-content {
+        width: 8rem;
+        height: $height;
+        border-radius: $percent; //Tem que ser 10% da largura ou altura (quadrado é tudo igual), se for um retângulo, preciso escolher a largura ou altura para fazer isso
 
-    flex-grow: 1;
+        flex-grow: 1;
+    }
+    .addon-content{
+        padding: 0 5px 5px 5px;
+
+        border-radius: 0 0 $percent $percent;
+        min-height: 0.5rem;
+    }
+    .filler{
+        width: 100%;
+        height: 1.5rem;
+        top: 7rem;
+    }
+
+    .main-content .title {
+        flex-direction: column;
+        text-align: center;
+
+        align-items: center;
+        justify-content: center;
+    }
+    .main-content .title .description {
+        order: 2;
+        font-size: 1rem;
+        font-weight: 500;
+
+        overflow-wrap: break-word;
+    }
+    .main-content .title .value {
+        order: 1;
+        font-size: 1.35rem;
+        font-weight: 700;
+
+        align-self: center;
+    }
 }
-.card.default .addon-content{
-    border-radius: 0.8rem;
-    min-height: 1.5rem;
+
+/*Configurações do card do tipo only-title*/
+.card.only-title{
+    .main-content {
+        width: 16rem;
+        min-height: 2rem;
+        border-radius: 0.2rem; //Tem que ser 10% da largura ou altura (quadrado é tudo igual), se for um retângulo, preciso escolher a largura ou altura para fazer isso
+    
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-grow: 1;
+    }
+    .addon-content{
+        padding: 0 5px 5px 5px;
+    
+        border-radius: 0 0 0.2rem 0.2rem;
+        min-height: 0.5rem;
+    }
+    .filler{
+        width: 100%;
+        height: 1rem;
+        top: 1.5rem;
+    }
+
+    .main-content .title {
+        padding: 5px;
+    }
+    .main-content .title .description {
+        font-size: 1.2rem;
+        font-weight: 700;
+    
+        overflow-wrap: break-word;
+    }
 }
-.card.default .addon-content .filler{
-    width: 100%;
-    height: 1.5rem;
-    top: -0.75rem;
-    position: absolute;
+
+/*Configurações do card do tipo small-upper-title*/
+$height: 4rem;
+$percent: ($height * 0.1);
+.card.small-upper-title{
+    .main-content {
+        width: 16rem;
+        min-height: $height;
+        border-radius: $percent; //Tem que ser 10% da largura ou altura (quadrado é tudo igual), se for um retângulo, preciso escolher a largura ou altura para fazer isso
+
+        flex-grow: 1;
+    }
+    .addon-content{
+        padding: 10px;
+
+        border-radius: 0 0 $percent $percent;
+        min-height: 1rem;
+    }
+    .filler{
+        width: 100%;
+        height: 2rem;
+        top: 2rem;
+    }
+
+    .main-content .title {
+        padding: 10px;
+
+        flex-direction: column;
+        text-align: center;
+        
+        align-items: center;
+        justify-content: center;
+    }
+    .main-content .title .description {
+        font-size: 0.8rem;
+        font-weight: 500;
+        
+        overflow-wrap: break-word;
+
+        align-self: flex-start;
+    }
+    .main-content .title .value {
+        font-size: 1.35rem;
+        font-weight: 700;
+
+        align-self: flex-start;
+    }
 }
 
-.card.default .main-content .title {
-    flex-direction: column;
-    text-align: center;
+/* Configurações dos itens do addon */
+    /* Configurações dos itens default */
+    .card .addon-content .addon-item.default{
+        display: flex;
+        justify-content: space-between;
+    }
+    .card .addon-content .default .description {
+        font-size: 0.90rem;
+        font-weight: 500;
 
-    align-items: center;
-    justify-content: center;
-}
+        overflow-wrap: break-word;
+    }
+    .card .addon-content .default .value {
+        font-size: 0.90rem;
+        font-weight: 700;
 
-.card.default .main-content .title .description {
-    order: 2;
-    font-size: 1rem;
-    font-weight: 500;
+        align-self: center;
+    }
 
-    overflow-wrap: break-word;
-}
+    /* Configurações dos itens small-title */
+    .card .addon-content .small-title .description {
+        display: flex;
+        font-size: 0.8rem;
+        font-weight: 500;
 
-.card.default .main-content .title .value {
-    order: 1;
-    font-size: 1.35rem;
-    font-weight: 700;
+        overflow-wrap: break-word;
+    }
 
-    align-self: center;
-}
+    /* Configurações dos itens link e url */
+    .card .addon-content .url .description,
+    .card .addon-content .link .description {
+        padding-left: 10px;
+        font-size: 1rem;
+        font-weight: 700;
+
+        overflow-wrap: break-word;
+    }

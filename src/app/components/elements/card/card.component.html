@@ -1,9 +1,33 @@
-<div class="card" [ngClass]="cardData.type">
+<div class="card" [ngClass]="cardData.type" [class.reverse]="cardData.reverse">
     <div class="main-content">
-        <h3 class="title"><span class="description">{{cardData.description}}<span class="visually-hidden">:</span></span> <span class="value">{{cardData.value}}</span></h3>
+        <h3 class="title">
+            <!-- Se o tipo for default -->
+            <span class="description" *ngIf="cardData.type == 'default'">{{cardData.description}}<span class="visually-hidden">:</span></span> 
+            <span *ngIf="cardData.type == 'default'" class="value">{{cardData.value}}</span>
+
+            <!-- Se o tipo for only-title -->
+            <span class="description" *ngIf="cardData.type == 'only-title'">{{cardData.description}}</span>
+
+            <!-- Se o tipo for small-upper-title -->
+            <span class="description" *ngIf="cardData.type == 'small-upper-title'">{{cardData.description}}<span class="visually-hidden">:</span></span> 
+            <span *ngIf="cardData.type == 'small-upper-title'" class="value">{{cardData.value}}</span>
+        </h3>
     </div>
-    <div class="addon-content">
-        <div class="filler"></div>
-        ssss
+    <div *ngIf="cardData.additionalInfo" class="filler"></div>
+    <div *ngIf="cardData.additionalInfo" class="addon-content">
+        <div *ngFor="let addon of cardData.additionalInfo" class="addon-item" [ngClass]="addon.type">
+            <!-- Se o tipo for default -->
+            <span class="description" *ngIf="addon.type == 'default'" >{{addon.description}}<span class="visually-hidden">:</span></span> 
+            <span class="value" *ngIf="addon.type == 'default'" >{{addon.value}}</span>
+
+            <!-- Se o tipo for small-title -->
+            <span class="description" *ngIf="addon.type == 'small-title'" >{{addon.description}}<span class="visually-hidden">:</span></span>
+
+            <!-- O tipo url é apenas a url em si, de um link para outro site, enquanto que o tipo link é uma url interna do sistema, uma página do IFFar em Dados -->
+            <!-- Se o tipo for url -->
+            <a class="description" href="{{addon.value}}" *ngIf="addon.type == 'url'">{{addon.description}}</a>
+            <!-- Se o tipo for link -->
+            <a class="description" href="{{addon.value}}" *ngIf="addon.type == 'link'">{{addon.description}}</a>
+        </div>
     </div>
 </div>
