@@ -1,16 +1,23 @@
-<h2>Ingresso e progressão de alunos</h2>
 <div>
-    <div class="cards-list">
-        <app-card *ngFor="let card of rateCards" [cardData]="card"></app-card>
-    </div>
-    <div>
+    <div class="content-bar-h">
         <div>
-            <h3>Formas de ingresso utilizadas</h3>
-            <app-bar-chart [data]="entryMethods"></app-bar-chart>
+            <h2>Ingresso e progressão de alunos</h2>
         </div>
-        <div>
-            <h3>Opções de reserva de vaga disponibilizadas</h3>
-            <app-bar-chart [data]="slotReservationOptions"></app-bar-chart>
+        <app-content-bar (changeYear)="onChangeYear()" [years]="years"></app-content-bar>
+    </div>
+    <div class="cards-1-3">
+        <div class="cards-list">
+            <app-card *ngFor="let card of rateCards" [cardData]="card"></app-card>
+        </div>
+        <div class="graphs">
+            <div>
+                <h3>Formas de ingresso utilizadas</h3>
+                <app-bar-chart [data]="entryMethods"></app-bar-chart>
+            </div>
+            <div>
+                <h3>Opções de reserva de vaga disponibilizadas</h3>
+                <app-bar-chart [data]="slotReservationOptions"></app-bar-chart>
+            </div>
         </div>
     </div>
 </div>

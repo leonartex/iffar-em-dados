@@ -7,10 +7,20 @@
         [cards]="header!.cards"
     ></app-header>
     <div class="info">
-        <app-units-map [mapData]="map" [unitsData]="units"></app-units-map>
-        <app-courses-info [coursesInfo]="coursesInfo"></app-courses-info>
-        <app-projects-info [projectsInfo]="projectsInfo"></app-projects-info>
-        <app-entry-and-progress-info [entryAndProgressInfo]="entryAndProgressInfo"></app-entry-and-progress-info>
-        <app-students-profile-info [studentsProfile]="studentsProfile"></app-students-profile-info>
+        <div>
+            <app-units-map [mapData]="map" [unitsData]="units"></app-units-map>
+        </div>
+        <div>
+            <app-courses-info [coursesInfo]="coursesInfo" [years]="years"></app-courses-info>
+        </div>
+        <div>
+            <app-projects-info [projectsInfo]="projectsInfo" [years]="years"></app-projects-info>
+        </div>
+        <div>
+            <app-entry-and-progress-info [entryAndProgressInfo]="entryAndProgressInfo" [years]="years"></app-entry-and-progress-info>
+        </div>
+        <div>
+            <app-students-profile-info [studentsProfile]="studentsProfile" [years]="years"></app-students-profile-info>
+        </div>
     </div>
 </div>

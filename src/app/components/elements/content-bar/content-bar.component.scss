@@ -1,0 +1,35 @@
+@import 'src/sass/_variables';
+
+.years-list {
+    display: flex;
+
+    ul {
+        display: flex;
+        flex-direction: row;
+
+        li{
+            display:inline;
+        }
+    }
+
+    button{
+        font-size: 1.25rem;
+        padding: 10px;
+        margin: 2px;
+
+        color: white;
+        background-color: $iffar-green-darker;
+        transition: background-color .085s ease-in;
+        border: 0;
+        border-radius: 10%;
+
+        &:hover{
+            background-color: $iffar-green-even-darker;
+        }
+
+        &:active, &.active{
+            background-color: $iffar-green;
+            transition: background-color .045s ease-in;
+        }
+    }
+}

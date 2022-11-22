@@ -13,6 +13,7 @@ export class BarChartComponent implements OnInit {
 
   public barChartOptions: ChartConfiguration['options'] = {
     responsive: true,
+    maintainAspectRatio: true,
     indexAxis: 'y',
     scales: {
       x: {

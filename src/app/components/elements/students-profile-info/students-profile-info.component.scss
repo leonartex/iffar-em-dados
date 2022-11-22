@@ -1,0 +1,10 @@
+.graphs{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+
+    .gender{
+        app-doughnut-chart{
+            height: 100px;
+        }
+    }
+}

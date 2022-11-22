@@ -1,3 +1,24 @@
+<div *ngIf="response != null">
+    <app-header
+        [type]="header!.type"
+        [title]="header!.title"
+        [breadcrumb]="header!.breadcrumb"
+        [background]="header!.background"
+        [cards]="header!.cards"
+    ></app-header>
+    <div class="info">
+        <div>
+            <app-course-detailing [courseDetalingInfo]="courseDetailing"></app-course-detailing>
+        </div>
+        <div>
+            <app-entry-and-progress-info [entryAndProgressInfo]="entryAndProgressInfo" [years]="years"></app-entry-and-progress-info>
+        </div>
+        <div>
+            <app-students-profile-info [studentsProfile]="studentsProfile" [years]="years"></app-students-profile-info>
+        </div>
+    </div>
+</div>
+
 <!-- <div *ngIf="courseInfo">
     <h2>{{courseInfo.courseDetailing.pnpName}}</h2>
     <div *ngFor="let rateCard of processedInfo[2].rateCards">
@@ -11,4 +32,3 @@
     <!-- <app-bar-chart [data] = "data5"> </app-bar-chart> -->
     <!-- <app-bar-chart [data] = "data6"> </app-bar-chart> -->
 <!-- </div> -->
-ÉEEEE

@@ -14,6 +14,8 @@ export class HomePageComponent implements OnInit {
   public response: HomePageResponse | null = null;
   public map: any;
   public units: any;
+
+  public years: Array<string> = [];
   public coursesInfo: any;
   public projectsInfo: any;
   public entryAndProgressInfo: any;
@@ -37,6 +39,13 @@ export class HomePageComponent implements OnInit {
       this.map = this.response.map;
       this.units = this.response.units;
       
+      this.years = [...new Set(this.response.infoPerYear.map(infoP => infoP.year))];
+      this.years.sort((yearA, yearB) => {
+        let yA: string = yearA.toString().toUpperCase();
+        let yB: string = yearB.toString().toUpperCase();
+        return (yA < yB) ? -1 : (yA > yB) ? 1 : 0;
+      }).reverse();
+
       this.coursesInfo = this.response.infoPerYear[0].coursesInfo;
       this.projectsInfo = this.response.infoPerYear[0].projectsInfo;
       this.projectsInfo = this.response.infoPerYear[0].projectsInfo;
@@ -63,7 +72,7 @@ export class HomePageComponent implements OnInit {
     let title: Array<string> = ['IFFAR', 'em Dados'];
     let breadcrumb: Array<any> = [];
 
-    let background = res.infoPerYear[0].coursesInfo.map(course => course.apiNameFiltered);
+    let background = res.units.map(unit => unit.city.cityName);
 
     let cards: Array<Card> = []
 

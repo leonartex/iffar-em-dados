@@ -8,6 +8,7 @@ import { BarChartData } from 'src/app/shared/model/barChartData.model';
   styleUrls: ['./students-profile-info.component.scss']
 })
 export class StudentsProfileInfoComponent implements OnInit {
+  @Input() years: Array<string> = [];
 
   @Input() studentsProfile: StudentsProfile = new StudentsProfile;
 
@@ -192,6 +193,10 @@ export class StudentsProfileInfoComponent implements OnInit {
 
 
     return ageGroupChart;
+  }
+
+  public onChangeYear(){
+    
   }
 
   //Função para trocar elementos de array de posição: https://stackoverflow.com/questions/4011629/swapping-two-items-in-a-javascript-array

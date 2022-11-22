@@ -12,6 +12,7 @@ import { Card } from 'src/app/shared/model/card.model';
   styleUrls: ['./entry-and-progress-info.component.scss']
 })
 export class EntryAndProgressInfoComponent implements OnInit {
+  @Input() years: Array<string> = [];
 
   @Input() entryAndProgressInfo: EntryAndProgressInfo = new EntryAndProgressInfo;
 
@@ -118,6 +119,10 @@ export class EntryAndProgressInfoComponent implements OnInit {
     });
 
     return chartData;
+  }
+
+  public onChangeYear(){
+    
   }
 
 }

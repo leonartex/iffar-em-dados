@@ -1,6 +1,23 @@
-<div *ngIf="response">
-    <app-courses-info [coursesInfo]="coursesInfo"></app-courses-info>
-    <app-projects-info [projectsInfo]="projectsInfo"></app-projects-info>
-    <app-entry-and-progress-info [entryAndProgressInfo]="entryAndProgressInfo"></app-entry-and-progress-info>
-    <app-students-profile-info [studentsProfile]="studentsProfile"></app-students-profile-info>
+<div *ngIf="response != null">
+    <app-header
+        [type]="header!.type"
+        [title]="header!.title"
+        [breadcrumb]="header!.breadcrumb"
+        [background]="header!.background"
+        [cards]="header!.cards"
+    ></app-header>
+    <div class="info">
+        <div>
+            <app-courses-info [coursesInfo]="coursesInfo" [years]="years"></app-courses-info>
+        </div>
+        <div>
+            <app-projects-info [projectsInfo]="projectsInfo" [years]="years"></app-projects-info>
+        </div>
+        <div>
+            <app-entry-and-progress-info [entryAndProgressInfo]="entryAndProgressInfo" [years]="years"></app-entry-and-progress-info>
+        </div>
+        <div>
+            <app-students-profile-info [studentsProfile]="studentsProfile" [years]="years"></app-students-profile-info>
+        </div>
+    </div>
 </div>

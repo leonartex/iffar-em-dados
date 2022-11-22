@@ -10,6 +10,8 @@ import ProcessedCoursesInfo from 'src/app/shared/model/processedInfo/processedCo
   styleUrls: ['./courses-info.component.scss']
 })
 export class CoursesInfoComponent implements OnInit {
+  @Input() years: Array<string> = [];
+
   @Input() coursesInfo: Array<CoursesInfo> = [];
   public card = new Card;
 
@@ -205,6 +207,10 @@ export class CoursesInfoComponent implements OnInit {
     }
 
     return chartData;
+  }
+
+  public onChangeYear(){
+    console.log("Evento: ")
   }
 
   //Função auxiliar para criar a lista de cards dos cursos ofertados

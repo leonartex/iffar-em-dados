@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import CourseInfo from 'src/app/shared/model/api/courseInfo.model';
 import { EntryMethod } from 'src/app/shared/model/api/entryMethod.model';
 import { RateCards } from 'src/app/shared/model/api/rateCards.model';
+import { CoursePageResponse } from 'src/app/shared/model/api/responses/coursePageResponse.model';
 import { SlotReservationOptions } from 'src/app/shared/model/api/slotReservationOptions.model';
 import StudentsProfile from 'src/app/shared/model/api/studentsProfile.model';
 import { BarChartData } from 'src/app/shared/model/barChartData.model';
@@ -15,43 +16,85 @@ import { ProcessedInfo } from 'src/app/shared/model/processedInfo.model';
   styleUrls: ['./course-page.component.scss']
 })
 export class CoursePageComponent implements OnInit {
-  // private apiUrl: string;
-
-  // //Variável que armazenará o json recebido do backend
-  // public courseInfo: CourseInfo | null = null;
-
-  // //Conjunto de variáveis que representarão os valores que serão utilizados nos componentes para entregar as informações (os valores utilizados para impressão)
-  // public id: number = 1; //Variável para utilizar como parte do id dos gráficos
-  // public processedInfo: Array<ProcessedInfo> = [];
+  private apiUrl: string;
   
-  // public data1: any;
-  // public data2: any;
+  public response: CoursePageResponse | null = null;
+  public units: any;
+  public courseDetailing: any;
 
-  // public data3: any;
-  // public data4: any;
-  // public data5: any;
-  // public data6: any;
+  public years: Array<string> = [];
+  public entryAndProgressInfo: any;
+  public studentsProfile: any;
 
+  public header: {
+    type: string,
+    title: Array<string>,
+    breadcrumb: Array<any>,
+    background: Array<string>,
+    cards: Array<Card>
+  } | null = null;
 
   constructor(private http: HttpClient){
-    // this.apiUrl = 'http://localhost:3333/api';
-    // this.http.get<CourseInfo>(`${this.apiUrl}/course/66658`)
-    // .subscribe(res => {
-    //   this.courseInfo = res;
-    //   this.processedInfo = this.processInfo(this.courseInfo);
-    //   console.log(this.processedInfo);
+    this.apiUrl = 'http://localhost:3333/api';
+    this.http.get<CoursePageResponse>(`${this.apiUrl}/course/66658`)
+    .subscribe(res => {
+      console.log(res);
+      this.response = res;
 
-    //   this.data1 = {data: this.processedInfo[2].entryMethods, id: 'bar-chart-'+this.id++}
-    //   this.data2 = {data: this.processedInfo[2].slotReservationOptions, id: 'bar-chart-'+this.id++}
-    //   this.data3 = {data: this.processedInfo[2].studentsProfile.income, id: 'bar-chart-'+this.id++}
-    //   this.data4 = {data: this.processedInfo[2].studentsProfile.racialDistribution, id: 'bar-chart-'+this.id++}
-    //   this.data5 = {data: this.processedInfo[2].studentsProfile.gender, id: 'bar-chart-'+this.id++}
-    //   this.data6 = {data: this.processedInfo[2].studentsProfile.age, id: 'bar-chart-'+this.id++}
-    // });
+      this.header = this.mountHeader(res);
+
+      this.courseDetailing = res.courseDetailing;
+
+      this.years = [...new Set(this.response.infoPerYear.map(infoP => infoP.year))];
+      this.years.sort((yearA, yearB) => {
+        let yA: string = yearA.toString().toUpperCase();
+        let yB: string = yearB.toString().toUpperCase();
+        return (yA < yB) ? -1 : (yA > yB) ? 1 : 0;
+      }).reverse();
+
+      this.entryAndProgressInfo = this.response.infoPerYear[0].entryAndProgressInfo;
+      this.studentsProfile = this.response.infoPerYear[0].studentsProfile;
+
+    })
   }
 
   ngOnInit(){
     
+  }
+
+  private mountHeader(res: CoursePageResponse): {
+    type: string,
+    title: Array<string>,
+    breadcrumb: Array<any>,
+    background: Array<string>,
+    cards: Array<Card>
+  }{
+    let type: string = 'course';
+
+    let title: Array<string> = [];
+    title.push(res.courseDetailing.degree + ' em');
+    title.push(res.courseDetailing.apiNameFiltered);
+    title.push("Campus "+res.courseDetailing.city);
+    // ['Bacharelado em', 'Sistemas de Informação', 'Campus São Borja'];
+
+    let breadcrumb: Array<any> = [{label: 'Início', url: '/'}, {label: "Campus "+res.courseDetailing.city, url: '/sao-borja/'}, {label: res.courseDetailing.apiNameFiltered, url: '/sao-borja/'}];
+
+    let background = res.courseComponents;
+
+    let cards: Array<Card> = []
+
+    let studentsCard = new Card;
+    studentsCard.description = "Alunos matriculados";
+    studentsCard.value = res.infoPerYear[0].entryAndProgressInfo.rateCards.enrolledStudents;
+    cards.push(studentsCard); 
+
+    return {
+      type,
+      title,
+      breadcrumb,
+      background,
+      cards
+    }
   }
 
   // processInfo(courseInfo: CourseInfo): Array<ProcessedInfo>{

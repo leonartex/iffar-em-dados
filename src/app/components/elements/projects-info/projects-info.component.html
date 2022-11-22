@@ -1,12 +1,26 @@
-<h2>Projetos acadêmicos</h2>
-<div class="flex">
-    <h3>Projetos acadêmicos</h3>
-    <div class="cards-list">
-        <app-card *ngFor="let card of projects.cards" [cardData] = "card"></app-card>
+<div>
+    <div class="content-bar-h">
+        <div>
+            <h2>Projetos acadêmicos</h2>
+        </div>
+        <app-content-bar (changeYear)="onChangeYear()" [years]="years"></app-content-bar>
     </div>
-    <div class="graphs">
-        <h3>Proporção de projetos por tipo</h3>
-        <app-bar-chart [data]="projects.projectsByType!"></app-bar-chart>
-        <app-bar-chart [data]="projects.projectsByKnowledgeArea!"></app-bar-chart>
+    <div class="flex">
+        <h3>Projetos acadêmicos</h3>
+        <div class="cards-1-3">
+            <div class="cards-list">
+                <app-card *ngFor="let card of projects.cards" [cardData]="card"></app-card>
+            </div>
+            <div class="graphs">
+                <div>
+                    <h3>Proporção de projetos por tipo</h3>
+                    <app-bar-chart [data]="projects.projectsByType!"></app-bar-chart>
+                </div>
+                <div>
+                    <h3>Projetos por área do conhecimento</h3>
+                    <app-bar-chart [data]="projects.projectsByKnowledgeArea!"></app-bar-chart>
+                </div>
+            </div>
+        </div>
     </div>
 </div>

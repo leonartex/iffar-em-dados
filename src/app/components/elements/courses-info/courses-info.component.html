@@ -1,6 +1,12 @@
 <div class="courses-info">
     <div>
-        <h2>Cursos</h2>
+        <div class="content-bar-h">
+            <div>
+                <h2>Cursos</h2>
+            </div>
+            <app-content-bar (changeYear)="onChangeYear()" [years]="years"></app-content-bar>
+        </div>
+
         <div class="info-layout">
             <div class="cards-list cards">
                 <app-card *ngFor="let card of general.cards" [cardData]="card"></app-card>
@@ -69,9 +75,14 @@
         </div>
         <div>
             <h4>Cursos ofertados</h4>
-            <div class="cards-list courses">
-                <div *ngFor="let card of graduation.courses">
-                    <app-card [cardData]="card"></app-card>
+            <div class="courses">
+                <div *ngFor="let type of getDegrees(graduation.courses!)">
+                    <h5>{{type}}</h5>
+                    <div>
+                        <div *ngFor="let card of filterCoursesByDegree(graduation.courses!, type)">
+                            <app-card [cardData]="card"></app-card>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -96,9 +107,14 @@
         </div>
         <div>
             <h4>Cursos ofertados</h4>
-            <div class="cards-list courses">
-                <div *ngFor="let card of postGraduation.courses">
-                    <app-card [cardData]="card"></app-card>
+            <div class="courses">
+                <div *ngFor="let type of getDegrees(postGraduation.courses!)">
+                    <h5>{{type}}</h5>
+                    <div>
+                        <div *ngFor="let card of filterCoursesByDegree(postGraduation.courses!, type)">
+                            <app-card [cardData]="card"></app-card>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input} from '@angular/core';
 import { ProjectsInfo } from 'src/app/shared/model/api/projectsInfo.model';
 import { BarChartData } from 'src/app/shared/model/barChartData.model';
 import { Card } from 'src/app/shared/model/card.model';
@@ -10,7 +10,8 @@ import ProcessedProjectsInfo from 'src/app/shared/model/processedInfo/processedP
   styleUrls: ['./projects-info.component.scss']
 })
 export class ProjectsInfoComponent implements OnInit {
-
+  @Input() years: Array<string> = [];
+  
   @Input() projectsInfo: Array<ProjectsInfo> = [];
 
   public colors = ['#0E3B43', '#205E3B', '#297F3E', '#CD191E', '#911216'];
@@ -179,6 +180,10 @@ export class ProjectsInfoComponent implements OnInit {
 
   public mountProjectsProgression(projectsInfo: Array<BarChartData>){
     
+  }
+
+  public onChangeYear(){
+
   }
 
 }

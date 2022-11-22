@@ -1,16 +1,26 @@
 <div>
-    <h2>Perfil dos estudantes</h2>
-    <div>
-        <h3>Distribuição por renda familiar</h3>
-        <app-bar-chart [data]="incomeDistribution!"></app-bar-chart>
-    
-        <h3>Distribuição por cor de pele ou raça</h3>
-        <app-bar-chart [data]="racialDistribution"></app-bar-chart>
-    
-        <h3>Distribuição por gênero</h3>
-        <app-doughnut-chart [data]="genderDistribution"></app-doughnut-chart>
-    
-        <h3>Distribuição por faixa etária</h3>
-        <app-bar-chart [data]="ageDistribution"></app-bar-chart>
+    <div class="content-bar-h">
+        <div>
+            <h2>Perfil dos estudantes</h2>
+        </div>
+        <app-content-bar (changeYear)="onChangeYear()" [years]="years"></app-content-bar>
+    </div>
+    <div class="graphs">
+        <div>
+            <h3>Distribuição por renda familiar</h3>
+            <app-bar-chart [data]="incomeDistribution!"></app-bar-chart>
+        </div>
+        <div>
+            <h3>Distribuição por cor de pele ou raça</h3>
+            <app-bar-chart [data]="racialDistribution"></app-bar-chart>
+        </div>
+        <div class="gender">
+            <h3>Distribuição por gênero</h3>
+            <app-doughnut-chart [data]="genderDistribution"></app-doughnut-chart>
+        </div>
+        <div>
+            <h3>Distribuição por faixa etária</h3>
+            <app-bar-chart [data]="ageDistribution"></app-bar-chart>
+        </div>
     </div>
 </div>
