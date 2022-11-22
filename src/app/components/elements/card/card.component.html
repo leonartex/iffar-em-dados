@@ -1,4 +1,4 @@
-<div class="card" [ngClass]="cardData.type" [class.reverse]="cardData.reverse">
+<div class="card" [ngClass]="cardData.type +' '+cardData.filterProperty" [class.reverse]="cardData.reverse">
     <div class="main-content">
         <h3 class="title">
             <!-- Se o tipo for default -->

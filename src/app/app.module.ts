@@ -16,6 +16,12 @@ import { EntryAndProgressInfoComponent } from './components/elements/entry-and-p
 import { StudentsProfileInfoComponent } from './components/elements/students-profile-info/students-profile-info.component';
 import { TestComponent } from './components/aux/test/test.component';
 
+import { NgChartsModule, NgChartsConfiguration } from 'ng2-charts';
+import { DoughnutChartComponent } from './components/graphs/doughnut-chart/doughnut-chart.component';
+import { HeaderComponent } from './components/elements/header/header.component';
+import { LogoSvgComponent } from './components/elements/logo-svg/logo-svg.component';
+import { UnitsMapComponent } from './components/elements/units-map/units-map.component';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -29,14 +35,21 @@ import { TestComponent } from './components/aux/test/test.component';
     ProjectsInfoComponent,
     EntryAndProgressInfoComponent,
     StudentsProfileInfoComponent,
-    TestComponent
+    TestComponent,
+    DoughnutChartComponent,
+    HeaderComponent,
+    LogoSvgComponent,
+    UnitsMapComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    NgChartsModule
   ],
-  providers: [],
+  providers: [
+    { provide: NgChartsConfiguration, useValue: { generateColors: true }}
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

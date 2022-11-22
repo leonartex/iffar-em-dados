@@ -13,6 +13,8 @@ export class ProjectsInfoComponent implements OnInit {
 
   @Input() projectsInfo: Array<ProjectsInfo> = [];
 
+  public colors = ['#0E3B43', '#205E3B', '#297F3E', '#CD191E', '#911216'];
+
   public projects: ProcessedProjectsInfo = new ProcessedProjectsInfo;
 
   constructor() { }
@@ -127,7 +129,7 @@ export class ProjectsInfoComponent implements OnInit {
     projectsByTypeChart.datasets[0] = {
       label: 'Projetos',
       data: [],
-      backgroundColor: ['rgba(255, 99, 132)']
+      backgroundColor: this.colors[1]
     }
 
     //E depois preencho com os valores
@@ -160,7 +162,7 @@ export class ProjectsInfoComponent implements OnInit {
     projectsByTypeChart.datasets[0] = {
       label: 'Projetos',
       data: [],
-      backgroundColor: ['rgba(255, 99, 132)']
+      backgroundColor: this.colors[1]
     }
 
     //E depois preencho com os valores
@@ -173,6 +175,10 @@ export class ProjectsInfoComponent implements OnInit {
     }
 
     return projectsByTypeChart;
+  }
+
+  public mountProjectsProgression(projectsInfo: Array<BarChartData>){
+    
   }
 
 }

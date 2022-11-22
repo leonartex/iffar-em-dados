@@ -1,6 +1,6 @@
 export default class StudentsProfile{
     ageGroupsDistribution: Array<{
-        age: string, //O valor da idade (ex.: 19 == 19 anos)
+        age: string, //O valor da idade ou faixa etária
         genderDistribution: Array<{
             description: string, //O nome que será utilizado para apresentação.
             total: number //O total de estudantes

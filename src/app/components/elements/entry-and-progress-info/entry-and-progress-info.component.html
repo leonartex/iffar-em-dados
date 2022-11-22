@@ -1,4 +1,16 @@
 <h2>Ingresso e progressão de alunos</h2>
 <div>
-    <app-card *ngFor="let card of rateCards" [cardData]="card"></app-card>
+    <div class="cards-list">
+        <app-card *ngFor="let card of rateCards" [cardData]="card"></app-card>
+    </div>
+    <div>
+        <div>
+            <h3>Formas de ingresso utilizadas</h3>
+            <app-bar-chart [data]="entryMethods"></app-bar-chart>
+        </div>
+        <div>
+            <h3>Opções de reserva de vaga disponibilizadas</h3>
+            <app-bar-chart [data]="slotReservationOptions"></app-bar-chart>
+        </div>
+    </div>
 </div>

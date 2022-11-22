@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Chart, ChartConfiguration, registerables } from 'chart.js';
+import { ChartConfiguration, ChartData, ChartType } from 'chart.js';
 import { BarChartData } from 'src/app/shared/model/barChartData.model';
 
 @Component({
@@ -9,44 +9,48 @@ import { BarChartData } from 'src/app/shared/model/barChartData.model';
 })
 export class BarChartComponent implements OnInit {
 
-  @Input() data: {data: BarChartData, id: string} = {data: new BarChartData, id: ''};
+  @Input() data: BarChartData = new BarChartData;
 
-  public chart: any;
-  public config: any;
-  public type = 'bar';
+  public barChartOptions: ChartConfiguration['options'] = {
+    responsive: true,
+    indexAxis: 'y',
+    scales: {
+      x: {
+        beginAtZero: true,
+        ticks: {
+          precision: 0
+        }
+      },
+      y: {
+        beginAtZero: true,
+        ticks: {
+          autoSkip: false
+        }
+      }
+    },
+    plugins: {
+      legend: {
+        display: true,
+        labels: {
+          font: {
+              size: 22
+          }
+      }
+      },
+    }
+  };
+  public barChartType: ChartType = 'bar';
+  public barChartData: ChartData<'bar'> = {
+    labels: [],
+    datasets: []
+  };
 
   constructor() {
   }
 
   ngOnInit(): void {
-
-    this.config = {
-      type: 'bar',
-      data: {
-        labels: this.data.data.labels,
-        datasets: this.data.data.datasets
-      },
-      options: {
-        indexAxis: 'y',
-        scales: {
-          y: {
-            beginAtZero: true
-          }
-        },
-        plugins: {
-          legend: {
-            display: false
-          }
-        }
-      }
-    }
-
-    Chart.register(...registerables);
-    console.log(this.data);
-    
-    let chartElement = document.getElementById(this.data.id)
-    // if(chartElement)
-      this.chart = new Chart('myChart', this.config);
+    this.barChartData.labels = this.data.labels;
+    this.barChartData.datasets = this.data.datasets;
   }
 
 }

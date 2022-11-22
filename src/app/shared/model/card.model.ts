@@ -34,6 +34,6 @@ export class Card{
     value: string | number | null,
     type: string
   }>;
-  filterProperty?: string | number;
+  filterProperty?: string;
   reverse: boolean = false;
 }

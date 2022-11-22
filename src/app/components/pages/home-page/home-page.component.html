@@ -1,1 +1,16 @@
-<p>home-page works!</p>
+<div *ngIf="response != null">
+    <app-header
+        [type]="header!.type"
+        [title]="header!.title"
+        [breadcrumb]="header!.breadcrumb"
+        [background]="header!.background"
+        [cards]="header!.cards"
+    ></app-header>
+    <div class="info">
+        <app-units-map [mapData]="map" [unitsData]="units"></app-units-map>
+        <app-courses-info [coursesInfo]="coursesInfo"></app-courses-info>
+        <app-projects-info [projectsInfo]="projectsInfo"></app-projects-info>
+        <app-entry-and-progress-info [entryAndProgressInfo]="entryAndProgressInfo"></app-entry-and-progress-info>
+        <app-students-profile-info [studentsProfile]="studentsProfile"></app-students-profile-info>
+    </div>
+</div>

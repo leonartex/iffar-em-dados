@@ -1,0 +1,48 @@
+<div class="header" [ngClass]="type">
+    <svg class="background" role="none" aria-hidden="true">
+        <defs>
+            <pattern id="pattern" patternUnits="userSpaceOnUse" width="100%" [attr.height]="1.75*backgroundMounted.length + 'rem'">
+                <text>
+                    <tspan [attr.x]="backgroundBegining[i]" dy="1.75rem" *ngFor="let row of backgroundMounted; index as i">{{row}}</tspan>
+                </text>
+            </pattern>
+        </defs>
+        
+
+        <rect x="0" y="0" width="100%" height="100%" fill="url(#pattern)"></rect>
+    </svg>
+
+    <div class="main-relative">
+        <div class="container">
+            <div class="main">
+                <div class="title">
+                    <!-- <img class="logo" *ngIf="type == 'home'" src="/assets/logo.svg" alt="[logo] 2 dados de 6 lados com todas as faces coloridas de verde, a face do número 1 está colorida de vermelho, semelhante à posição do círculo na marca do IFFar. As cores utilizadas são as mesmas do IFFar"> -->
+
+                    <app-logo-svg class="logo" *ngIf="type == 'home'"></app-logo-svg>
+                    <div class="logo-title">
+                        <div>
+                            <h1>
+                                <span *ngFor="let part of title">{{part}}</span>
+                            </h1> 
+                        </div>
+                    </div>
+                </div>
+
+                <nav class="breadcrumb" *ngIf="type != 'home'">
+                    <div>
+                        <ul>
+                            <li *ngFor="let crumb of breadcrumb; last as l">
+                                <a *ngIf="!l" [routerLink]="crumb.url">{{crumb.label}}</a>
+                                <span *ngIf="l" [routerLink]="crumb.url">{{crumb.label}}</span>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+
+            <div class="cards">
+                <app-card *ngFor="let card of cards" [cardData]="card"></app-card>
+            </div>
+        </div>
+    </div>
+</div>

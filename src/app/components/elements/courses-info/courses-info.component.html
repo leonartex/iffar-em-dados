@@ -1,26 +1,106 @@
-<h2>Cursos</h2>
-<app-card *ngFor="let card of general.cards" [cardData] = "card"></app-card>
+<div class="courses-info">
+    <div>
+        <h2>Cursos</h2>
+        <div class="info-layout">
+            <div class="cards-list cards">
+                <app-card *ngFor="let card of general.cards" [cardData]="card"></app-card>
+            </div>
+            <div class="graphs">
+                <div>
+                    <h3 class="h4">Distribuição por turno</h3>
+                    <app-doughnut-chart [data]="general.turns!"></app-doughnut-chart>
+                </div>
+                <div>
+                    <h3 class="h4">Distribuição por área do conhecimento</h3>
+                    <app-bar-chart [data]="general.knowledgeAreas!"></app-bar-chart>
+                </div>
+            </div>
+        </div>
+    </div>
 
-<h3>Técnico</h3>
-<app-card *ngFor="let card of technical.cards" [cardData] = "card"></app-card>
-<ul>
-    <li *ngFor="let card of technical.courses">
-        <app-card [cardData]="card"></app-card>
-    </li>
-</ul>
+    <div class="flex">
+        <h3>Técnico</h3>
+        <div class="info-layout">
+            <div class="cards-list cards">
+                <app-card *ngFor="let card of technical.cards" [cardData]="card"></app-card>
+            </div>
+            <div class="graphs">
+                <div>
+                    <h4>Distribuição por turno</h4>
+                    <app-doughnut-chart [data]="technical.turns!"></app-doughnut-chart>
+                </div>
+                <div>
+                    <h4>Distribuição por eixo do conhecimento</h4>
+                    <app-bar-chart [data]="technical.knowledgeAreas!"></app-bar-chart>
+                </div>
+            </div>
+        </div>
+        <div>
+            <h4>Cursos ofertados</h4>
+            <div class="courses">
+                <div *ngFor="let type of getDegrees(technical.courses!)">
+                    <h5>{{type}}</h5>
+                    <div>
+                        <div *ngFor="let card of filterCoursesByDegree(technical.courses!, type)">
+                            <app-card [cardData]="card"></app-card>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-<h3>Graduação</h3>
-<app-card *ngFor="let card of graduation.cards" [cardData] = "card"></app-card>
-<ul>
-    <li *ngFor="let card of graduation.courses">
-        <app-card [cardData]="card"></app-card>
-    </li>
-</ul>
+    <div class="flex">
+        <h3>Graduação</h3>
+        <div class="info-layout">
+            <div class="cards-list cards">
+                <app-card *ngFor="let card of graduation.cards" [cardData]="card"></app-card>
+            </div>
+            <div class="graphs">
+                <div>
+                    <h4>Distribuição por turno</h4>
+                    <app-doughnut-chart [data]="graduation.turns!"></app-doughnut-chart>
+                </div>
+                <div>
+                    <h4>Distribuição por área do conhecimento</h4>
+                    <app-bar-chart [data]="graduation.knowledgeAreas!"></app-bar-chart>
+                </div>
+            </div>
+        </div>
+        <div>
+            <h4>Cursos ofertados</h4>
+            <div class="cards-list courses">
+                <div *ngFor="let card of graduation.courses">
+                    <app-card [cardData]="card"></app-card>
+                </div>
+            </div>
+        </div>
+    </div>
 
-<h3>Pós-graduação</h3>
-<app-card *ngFor="let card of postGraduation.cards" [cardData] = "card"></app-card>
-<ul>
-    <li *ngFor="let card of postGraduation.courses">
-        <app-card [cardData]="card"></app-card>
-    </li>
-</ul>
+    <div class="flex">
+        <h3>Pós-graduação</h3>
+        <div class="info-layout">
+            <div class="cards-list cards">
+                <app-card *ngFor="let card of postGraduation.cards" [cardData]="card"></app-card>
+            </div>
+            <div class="graphs">
+                <div>
+                    <h4>Distribuição por turno</h4>
+                    <app-doughnut-chart [data]="postGraduation.turns!"></app-doughnut-chart>
+                </div>
+                <div>
+                    <h4>Distribuição por área do conhecimento</h4>
+                    <app-bar-chart [data]="postGraduation.knowledgeAreas!"></app-bar-chart>
+                </div>
+            </div>
+        </div>
+        <div>
+            <h4>Cursos ofertados</h4>
+            <div class="cards-list courses">
+                <div *ngFor="let card of postGraduation.courses">
+                    <app-card [cardData]="card"></app-card>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

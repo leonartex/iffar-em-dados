@@ -10,7 +10,7 @@ import { UnitPageResponse } from 'src/app/shared/model/api/responses/unitPageRes
 export class UnitPageComponent implements OnInit {
   private apiUrl: string;
   
-  public response: UnitPageResponse = new UnitPageResponse;
+  public response: UnitPageResponse | null = null;
   public coursesInfo: any;
   public projectsInfo: any;
   public entryAndProgressInfo: any;

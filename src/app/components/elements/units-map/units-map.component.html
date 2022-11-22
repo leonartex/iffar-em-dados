@@ -1,0 +1,27 @@
+<div>
+    <h2>Nossas unidades</h2>
+    <div class="units-container">
+        <div class="units-list">
+            <div>
+                <ul>
+                    <li *ngFor="let unit of unitsData" [ngClass]="unit.type">
+                        <a href="#"><span *ngIf="unit.type == 'campus'">
+                            Campus
+                        </span>
+                        <span *ngIf="unit.type == 'advanced-campus'">
+                            Campus Avançado
+                        </span>
+                        
+                        {{unit.city.cityName}}</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="map">
+            <figure id="map"></figure>
+        </div>
+        <div class="cards">
+            <app-card *ngFor="let card of cards" [cardData]="card"></app-card>
+        </div>
+    </div>    
+</div>

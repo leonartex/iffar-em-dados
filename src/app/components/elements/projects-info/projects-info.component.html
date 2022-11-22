@@ -1,5 +1,12 @@
 <h2>Projetos acadêmicos</h2>
-<div>
+<div class="flex">
     <h3>Projetos acadêmicos</h3>
-    <app-card *ngFor="let card of projects.cards" [cardData] = "card"></app-card>
+    <div class="cards-list">
+        <app-card *ngFor="let card of projects.cards" [cardData] = "card"></app-card>
+    </div>
+    <div class="graphs">
+        <h3>Proporção de projetos por tipo</h3>
+        <app-bar-chart [data]="projects.projectsByType!"></app-bar-chart>
+        <app-bar-chart [data]="projects.projectsByKnowledgeArea!"></app-bar-chart>
+    </div>
 </div>

@@ -3,6 +3,7 @@ export class BarChartData{
     datasets: Array<{
         label: string,
         data: Array<any>,
-        backgroundColor?: Array<string>
+        backgroundColor?: Array<string> | string;
+        barThickness?: number,
     }> = [];
 }

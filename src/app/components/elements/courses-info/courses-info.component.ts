@@ -79,8 +79,39 @@ export class CoursesInfoComponent implements OnInit {
     offeredCoursesCard.description = 'Cursos ofertados';
     if (coursesInfo.length == 0)
       offeredCoursesCard.value = 0
-    else
+    else {
       offeredCoursesCard.value = coursesInfo.reduce((total, current) => total += 1, 0)
+
+      //Monto os addon para o card
+      let addonList: Card["additionalInfo"] = [];
+
+      //Verifico se é pro tipo geral ou nível de curso
+      let coursesLevelOrDegree: Array<string>;
+      if (type == 'geral')
+        coursesLevelOrDegree = [...new Set(coursesInfo.map(course => course.level))];
+      else
+        coursesLevelOrDegree = [...new Set(coursesInfo.map(course => course.degree))];
+
+      for (let levelOrDegree of coursesLevelOrDegree) {
+        let total: number;
+        if (type == 'geral') {
+          total = coursesInfo.reduce((total, current) =>
+            current.level == levelOrDegree ? total += 1 : total += 0, 0
+          );
+        } else {
+          total = coursesInfo.reduce((total, current) =>
+            current.degree == levelOrDegree ? total += 1 : total += 0, 0
+          );
+        }
+
+        addonList.push({
+          description: levelOrDegree,
+          value: total,
+          type: 'default'
+        });
+      }
+      offeredCoursesCard.additionalInfo = addonList;
+    }
 
     let offeredSlotsCard: Card;
     offeredSlotsCard = new Card;
@@ -146,7 +177,7 @@ export class CoursesInfoComponent implements OnInit {
     chartData.datasets = [{
       label: 'Cursos',
       data: [],
-      backgroundColor: ['rgba(255, 99, 132)']
+      backgroundColor: ['#0E3B43', '#205E3B', '#297F3E', '#CD191E', '#911216']
     }]
     //E depois percorro ela para contar quantos cursos possui cada um
     for (let label of chartData.labels) {
@@ -165,7 +196,7 @@ export class CoursesInfoComponent implements OnInit {
     chartData.datasets = [{
       label: 'Cursos',
       data: [],
-      backgroundColor: ['rgba(255, 99, 132)']
+      backgroundColor: ['#205E3B']
     }]
     //E depois percorro ela para contar quantos cursos possui cada um
     for (let label of chartData.labels) {
@@ -180,31 +211,154 @@ export class CoursesInfoComponent implements OnInit {
   private mountCoursesCards(coursesInfo: Array<CoursesInfo>): Array<Card> {
     let coursesCards: Array<Card> = [];
 
-    for (let course of coursesInfo) {
+    for (let i = 0; i < coursesInfo.length; i++) {
+      let course = coursesInfo[i];
       //Faço o card para o curso da unidade de ensino
       let courseCard = new Card;
       courseCard.type = 'only-title';
 
       //Crio o título com o nome do curso
-      if (course.pnpName != null)
-        courseCard.description = course.pnpName;
-      else
+      // if (course.pnpName != null)
+      //   courseCard.description = course.pnpName;
+      // else
         courseCard.description = course.apiNameFiltered;
 
       courseCard.filterProperty = course.degree;
 
       //Filtro os cursos que se encaixam como um mesmo curso numa lista com todos os cursos da instituição (todas as 5 características que identificam um curso iguais, exceto o nome da cidade) (será feito depois) (crio uma variável global com a lista de todos os cursos)
+      // let sameCourses = coursesInfo.filter(courseI =>
+      //   courseI.apiNameFiltered == course.apiNameFiltered &&
+      //   courseI.degree == course.degree &&
+      //   courseI.level == course.level &&
+      //   courseI.modality == course.modality);
 
       //Monto o addon do card
+      let addons: Array<any> = []
+      addons.push({ description: 'Ofertado em', value: null, type: 'small-title' })
+      while (coursesInfo.findIndex(courseI => {
+        return courseI.apiNameFiltered == course.apiNameFiltered &&
+          courseI.degree == course.degree &&
+          courseI.level == course.level &&
+          courseI.modality == course.modality
+      }) >= 0) {
+        let j = coursesInfo.findIndex(courseI => {
+          return courseI.apiNameFiltered == course.apiNameFiltered &&
+            courseI.degree == course.degree &&
+            courseI.level == course.level &&
+            courseI.modality == course.modality
+        });
+        let sameCourse = coursesInfo[j];
+        let addon = {
+          description: sameCourse.cityName,
+          value: `/${this.urlFriendly(sameCourse.cityName)}/${this.urlFriendly(sameCourse.apiNameFiltered)}/${sameCourse.apiId}`,
+          type: 'link'
+        };
+        coursesInfo.splice(j, 1);
+
+        addons.push(addon)
+      }
+      courseCard.additionalInfo = addons;
 
       //Removo eles da lista
+      // let apiUsedId = [...new Set(sameCourses)]
+      // coursesInfo = coursesInfo.filter(courseI => sameCourses.find(sameC => sameC.apiId == courseI.apiId) == undefined);
 
       //Adiciono o card à lista
       coursesCards.push(courseCard);
     }
 
+    coursesCards.sort((courseA, courseB) => {
+      let cA = courseA.filterProperty!.toString().toUpperCase();
+      let cB = courseB.filterProperty!.toString().toUpperCase();
+      return (cA < cB) ? -1 : (cA > cB) ? 1 : 0;
+
+    })
+
     //Retorno a lista de cursos
     return coursesCards;
   }
 
+  public filterCoursesByDegree(courses: Array<Card>, type: string): Array<Card> {
+    let coursesF = courses.filter(course => course.filterProperty! == type);
+
+    return coursesF.sort((courseA, courseB) => {
+      let cA = courseA.description!.toString().toUpperCase();
+      let cB = courseB.description!.toString().toUpperCase();
+      return (cA < cB) ? -1 : (cA > cB) ? 1 : 0;
+
+    })
+  }
+
+  public getDegrees(courses: Array<Card>): Array<string> {
+    return [...new Set(courses.map(course => course.filterProperty!))];
+  }
+
+  public normalizeString(str: string): string {
+    return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+  }
+
+
+  public urlFriendly(str: string): string {
+    return this.normalizeString(str).replace(/ /g, '-').toLowerCase();
+  }
+
 }
+
+
+// private mountCoursesCards(coursesInfo: Array<CoursesInfo>): Array<Card> {
+//   let coursesCards: Array<Card> = [];
+
+//   for (let course of coursesInfo) {
+//     //Faço o card para o curso da unidade de ensino
+//     let courseCard = new Card;
+//     courseCard.type = 'only-title';
+
+//     //Crio o título com o nome do curso
+//     // if (course.pnpName != null)
+//     //   courseCard.description = course.pnpName;
+//     // else
+//       courseCard.description = course.apiNameFiltered;
+
+//     courseCard.filterProperty = course.degree;
+
+//     //Filtro os cursos que se encaixam como um mesmo curso numa lista com todos os cursos da instituição (todas as 5 características que identificam um curso iguais, exceto o nome da cidade) (será feito depois) (crio uma variável global com a lista de todos os cursos)
+//     let sameCourses = coursesInfo.filter(courseI =>
+//       courseI.apiNameFiltered == course.apiNameFiltered &&
+//       courseI.degree == course.degree &&
+//       courseI.level == course.level &&
+//       courseI.modality == course.modality);
+
+//     //Monto o addon do card
+//     let addons: Array<any> = []
+//     addons.push({ description: 'Ofertado em', value: null, type: 'small-title' })
+//     for (let sameCourse of sameCourses) {
+//       let addon = {
+//         description: sameCourse.cityName,
+//         value: `/${this.urlFriendly(sameCourse.cityName)}/${this.urlFriendly(sameCourse.apiNameFiltered)}/${sameCourse.apiId}`,
+//         type: 'link'
+//       };
+
+
+//       addons.push(addon)
+
+//     }
+//     courseCard.additionalInfo = addons;
+
+//     //Removo eles da lista
+//     // let apiUsedId = [...new Set(sameCourses)]
+//     // coursesInfo = coursesInfo.filter(courseI => sameCourses.find(sameC => sameC.apiId == courseI.apiId) == undefined);
+
+//     //Adiciono o card à lista
+//     coursesCards.push(courseCard);
+//   }
+
+//   coursesCards.sort((courseA, courseB) => {
+//     let cA = courseA.filterProperty!.toString().toUpperCase();
+//     let cB = courseB.filterProperty!.toString().toUpperCase();
+//     return (cA < cB) ? -1 : (cA > cB) ? 1 : 0;
+
+//   })
+
+//   //Retorno a lista de cursos
+//   return coursesCards;
+// }

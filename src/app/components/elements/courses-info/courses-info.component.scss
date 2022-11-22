@@ -1,0 +1,31 @@
+.courses-info>div{
+    margin-bottom: 40px;
+}
+
+.flex{
+    display: flex;
+    flex-direction: column;
+}
+.info-layout{
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+
+    .graphs{
+        display: grid;
+        grid-template-columns: 1fr 2fr;
+    }
+}
+
+.courses{
+    display: flex;
+    flex-direction: column;
+
+    >div{
+        margin-top: 10px;
+
+        >div{
+            display: flex;
+            flex-wrap: wrap;
+        }
+    }
+}

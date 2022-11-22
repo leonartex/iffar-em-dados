@@ -1,0 +1,193 @@
+@import 'src/sass/_variables';
+
+.header{
+    position: relative;
+
+    background-color: $iffar-green-darker;
+    color: white;
+}
+
+.main-relative{
+    position: relative;
+    z-index: 10;
+}
+.background{
+    position: absolute;
+    z-index: 1;
+
+    color: $iffar-green;
+
+    width: 100%;
+    height: 100%;
+}
+
+.container{
+    padding-top: 5vh;
+    padding-bottom: 5vh;
+    padding-left: 7.5vw;    
+    padding-right: 2vw;
+
+    display: flex;
+    flex-direction: row;
+
+    .main{
+        flex-grow: 1;
+        align-self: center;
+        margin-right: 20px;
+    }
+
+    h1, .breadcrumb>div{
+        background-color: $iffar-green-darker;
+        padding: 20px;
+    }
+    .breadcrumb{        
+        padding-top: 0;
+    }
+}
+
+/**
+ *  Configurações do título
+**/
+    .title{
+        h1{
+            display: flex;
+            flex-direction: column;
+        }
+        .logo-title{
+            display: flex;
+            align-items: center;
+
+            >div{
+                position: relative;
+            }
+        }
+    }
+
+    //Para a página inicial
+    .home{
+        .title{
+            display: flex;
+            flex-direction: row;
+
+            .logo{
+                width: 350px;
+                display: relative;
+                z-index: 50;
+            }
+            .logo-title{
+                >div{
+                    z-index: 10;
+                    left: -30px;
+                }
+            }
+
+            $font-size: 6rem;
+            span:nth-child(1){
+                font-size: $font-size;
+                font-weight: 700;
+            }
+            span:nth-child(2){
+                font-size: $font-size * 0.8;
+                font-weight: 500;
+            }
+        }
+    }
+    
+
+    //Para a página de campus
+    $font-size: 5rem;
+    .campus .title{
+        span:nth-child(1){
+            font-size: $font-size * 0.5;
+            font-weight: 500;
+        }
+        span:nth-child(2){
+            font-size: $font-size;
+            font-weight: 700;
+        }
+    }
+
+    //Para a página de curso
+    $font-size: 4rem;
+    .course .title span:nth-child(1){
+        font-size: $font-size * 0.65;
+        font-weight: 500;
+    }
+    .course .title span:nth-child(2){
+        font-size: $font-size;
+        font-weight: 700;
+    }
+    .course .title span:nth-child(3){
+        font-size: $font-size * 0.5;
+        font-weight: 500;
+    }
+
+/**
+ *  Configurações do breadcrumb
+**/ 
+    $font-size: 1.5rem;
+    .breadcrumb{
+        display: inline;
+        >div{
+            display: inline;
+        }
+        ul{
+            list-style: none;
+            display: inline;
+            padding-top: 10px;
+            
+            a{
+                border-bottom: 0.15em solid white;
+                background-image: linear-gradient(120deg,white,white);
+            }
+            a:hover, a:focus, a:active{
+                color: black;
+            }
+
+            a, span{
+                font-size: $font-size;
+                color: white;
+            }
+    
+            li{
+                display: inline;
+            }
+    
+            li+li:before {
+                padding: 8px;
+                color: white;
+                content: "/";
+                font-size: $font-size;
+                font-weight: 900;
+              }
+        }
+    }
+
+/**
+ *  Configurações da lista de cards (o recomendado é colocar só 3)
+**/
+.cards{
+    display: flex;
+    flex-direction: column;
+
+    align-self: center;
+
+    app-card{
+        margin-bottom: 10px;
+    }
+    app-card:last-of-type{
+        margin-bottom: 0;
+    }
+}
+
+/**
+ *  Configurações do background
+**/
+.background{
+    font-family: $font-family;
+
+    tspan{
+        fill: $iffar-green;
+        font-size: 1.5rem;
+    }
+}

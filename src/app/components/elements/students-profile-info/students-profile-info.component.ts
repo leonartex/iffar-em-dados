@@ -11,21 +11,27 @@ export class StudentsProfileInfoComponent implements OnInit {
 
   @Input() studentsProfile: StudentsProfile = new StudentsProfile;
 
+  public colors = ['#0E3B43', '#205E3B', '#297F3E', '#CD191E', '#911216'];
+
   public incomeDistribution: BarChartData = new BarChartData;
   public racialDistribution: BarChartData = new BarChartData;
   public genderDistribution: BarChartData = new BarChartData;
+  public ageDistribution: BarChartData = new BarChartData;
 
   constructor() { }
 
   ngOnInit(): void {
     this.incomeDistribution = this.mountIncomeDistribution(this.studentsProfile);
-    console.log(this.incomeDistribution);
+    //console.log(this.incomeDistribution);
     
     this.racialDistribution = this.mountRacialDistribution(this.studentsProfile);
-    console.log(this.racialDistribution);
+    //console.log(this.racialDistribution);
     
     this.genderDistribution = this.mountGenderDistribution(this.studentsProfile);
-    console.log(this.genderDistribution);
+    //console.log(this.genderDistribution);
+
+    this.ageDistribution = this.mountAgeGroupDistribution(this.studentsProfile);
+    console.log(this.ageDistribution);
   }
   //Monto os dados no formato necessário para mostrar informações apenas da distribuição de estudantes por renda familiar
   private mountIncomeDistribution(studentsProfile: StudentsProfile): BarChartData{
@@ -53,7 +59,7 @@ export class StudentsProfileInfoComponent implements OnInit {
     incomeChart.datasets.push({
       label: 'Alunos',
       data: [],
-      backgroundColor: ['rgba(255, 99, 132)',]
+      backgroundColor: this.colors[1]
     })
     //Agora adiciono os dados, realizando a soma dos objetos que possuem a mesma renda
     for(let i = 0; i < incomeChart.labels.length; i++){
@@ -75,19 +81,19 @@ export class StudentsProfileInfoComponent implements OnInit {
     }
 
     let racialDistribution = studentsProfile.racialDistribution;
-    console.log(racialDistribution);
+    //console.log(racialDistribution);
 
     //Crio os labels
     racialDistributionChart.labels = [...new Set(racialDistribution.map(racialDistEl => racialDistEl.description))].sort();
     
     //Faço o label de informação não declarada ficar por último. Fonte: https://stackoverflow.com/questions/24909371/move-item-in-array-to-last-position
     racialDistributionChart.labels.push(racialDistributionChart.labels.splice(racialDistributionChart.labels.indexOf('NÃO DECLARADA'), 1)[0]);
-    console.log(racialDistributionChart.labels);
+    //console.log(racialDistributionChart.labels);
 
     racialDistributionChart.datasets.push({
       label: 'Alunos',
       data: [],
-      backgroundColor: ['rgba(255, 99, 132)',]
+      backgroundColor: this.colors[1]
     })
     //Percorro o array de labels para realizar a respectiva adição dos valores
     for(let i = 0; i < racialDistributionChart.labels.length; i++){
@@ -116,7 +122,7 @@ export class StudentsProfileInfoComponent implements OnInit {
     }
 
     let ageGroupDistribution = studentsProfile.ageGroupsDistribution;
-    console.log(ageGroupDistribution);
+    //console.log(ageGroupDistribution);
 
     //Uso o map() para pegar apenas os dados de renda (para o gráfico de distribuição por cor ou raça será necessário um método um pouco diferente)
     let genderNotFlat = ageGroupDistribution.map(ageGroupEl => ageGroupEl.genderDistribution);
@@ -127,12 +133,12 @@ export class StudentsProfileInfoComponent implements OnInit {
     
     //Mas ainda preciso corrigir a ordenação dos labels (se no futuro forem adicionadas diferentes rendas, a lógica pode quebrar (mais para o futuro posso pensar em algo melhor))
     // genderChart.labels = this.swapItems(genderChart.labels, 0,1)
-    console.log(genderChart.labels);
+    //console.log(genderChart.labels);
     
     genderChart.datasets.push({
       label: 'Alunos',
       data: [],
-      backgroundColor: ['rgba(255, 99, 132)',]
+      backgroundColor: this.colors
     })
     //Agora adiciono os dados, realizando a soma dos objetos que possuem a mesma renda
     for(let i = 0; i < genderChart.labels.length; i++){
@@ -143,10 +149,60 @@ export class StudentsProfileInfoComponent implements OnInit {
     return genderChart;
   }
 
+  private mountAgeGroupDistribution(studentsProfile: StudentsProfile, steps: number = 5): BarChartData{
+    console.log('Distribuição por idade:');
+    let ageGroupChart = new BarChartData;
+
+    if(studentsProfile == null || studentsProfile == undefined){
+      ageGroupChart.labels = [
+        "---",
+      ];
+      return ageGroupChart;
+    }
+
+    let ageGroups = studentsProfile.ageGroupsDistribution;
+    console.log(ageGroups);
+
+    //Pego os dados de idade que serão usados como label
+    ageGroupChart.labels = ageGroups.map(ageGroup => ageGroup.age).sort();
+    console.log(ageGroupChart.labels);
+
+    // //Agora separo os labels que são números, para poder ordenar e então agrupar
+    // let numberLabels = labels.filter(label => this.isNum(label));
+    // //Transformo em número
+    // numberLabels = numberLabels.map(label => parseInt(label))
+
+    ageGroupChart.datasets.push({
+      label: 'Alunos',
+      data: [],
+      backgroundColor: this.colors[1]
+    })
+    //Percorro os labels para montar os dados
+    for(let i = 0; i < ageGroupChart.labels.length; i++){
+      let data = ageGroups.find(ageGroup => ageGroup.age == ageGroupChart.labels[i]);
+
+      if(data){
+        //Transformo os objetos sobre renda familiar apenas no número de estudantes que existem em cada tipo
+        let students = data.genderDistribution.map(genderEl => genderEl.total);
+        //Agora uso reduce() para somar todos esses valores, assim, retornando o total de estudantes de determinada cor ou raça
+        let totalStudents = students.reduce((total, current) => total + current);
+        ageGroupChart.datasets[0].data.push(totalStudents)
+      }
+    }
+
+
+    return ageGroupChart;
+  }
+
   //Função para trocar elementos de array de posição: https://stackoverflow.com/questions/4011629/swapping-two-items-in-a-javascript-array
   private swapItems(array: Array<any>, a: number, b: number){
     array[a] = array.splice(b, 1, array[a])[0]; //array[a] recebe o valor que foi removido (o retorno de um splice) enquanto remove 1 elemento na posição b, adicionando o a no lugar, assim, trocando de posição
     return array;
+  }
+
+  //Verifica se uma string é um número
+  private isNum(v: string) {
+    return /\d/.test(v);
   }
 
 }

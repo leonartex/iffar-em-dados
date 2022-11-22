@@ -15,6 +15,8 @@ export class EntryAndProgressInfoComponent implements OnInit {
 
   @Input() entryAndProgressInfo: EntryAndProgressInfo = new EntryAndProgressInfo;
 
+  public colors = ['#0E3B43', '#205E3B', '#297F3E', '#CD191E', '#911216'];
+
   public rateCards: Array<Card> = [];
   public entryMethods: BarChartData = new BarChartData;
   public slotReservationOptions: BarChartData = new BarChartData;
@@ -79,9 +81,7 @@ export class EntryAndProgressInfoComponent implements OnInit {
     chartData.datasets.push({
       label: 'Alunos',
       data: [],
-      backgroundColor: [
-        'rgba(255, 99, 132)',
-      ]
+      backgroundColor: this.colors[1]
     })
 
     //Percorro todos os métodos de entrada para montar os dados necessários para montar um gráfico
@@ -109,12 +109,12 @@ export class EntryAndProgressInfoComponent implements OnInit {
     chartData.datasets.push({
       label: 'Vagas regulares',
       data: Object.values(slotReservationOptions.regular), //Transformo os valores contidos nas propriedades do objeto em um único array
-      backgroundColor: ['rgba(255, 99, 132)']
+      backgroundColor: this.colors[1]
     });
     chartData.datasets.push({
       label: 'Vagas extraordinárias',
       data: Object.values(slotReservationOptions.extraordinary),
-      backgroundColor: ['rgba(50, 99, 53)']
+      backgroundColor: this.colors[2]
     });
 
     return chartData;

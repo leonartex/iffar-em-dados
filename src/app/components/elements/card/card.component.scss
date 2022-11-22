@@ -98,7 +98,7 @@ $percent: ($height * 0.1);
 /*Configurações do card do tipo only-title*/
 .card.only-title{
     .main-content {
-        width: 16rem;
+        width: 23vw;
         min-height: 2rem;
         border-radius: 0.2rem; //Tem que ser 10% da largura ou altura (quadrado é tudo igual), se for um retângulo, preciso escolher a largura ou altura para fazer isso
     
@@ -207,11 +207,62 @@ $percent: ($height * 0.1);
     }
 
     /* Configurações dos itens link e url */
+    .card .addon-content>div{
+        padding-bottom: 5px;
+    }
     .card .addon-content .url .description,
     .card .addon-content .link .description {
-        padding-left: 10px;
         font-size: 1rem;
         font-weight: 700;
 
         overflow-wrap: break-word;
+    }
+
+/* Configurações dos filterProperty */
+    .Técnico, .Integrado, .Bacharelado, .Lato.Sensu{
+        .main-content {
+            background-color: $iffar-green;
+        }
+        .addon-content, .filler{
+            background-color: $iffar-green-darker;
+
+            a{
+                color: white;
+                border-bottom: 0.15em solid white;
+                background-image: linear-gradient(120deg, #fff, #fff)!important;
+            }
+            a:hover, a:focus, a:active{
+                color: black;
+                background-size: 100% 100%;
+                transition: background-size .125s ease-in;
+            }
+        }
+    }
+    
+    .Graduação, .PROEJA, .Licenciatura, .Stricto.Sensu{
+        .main-content {
+            background-color: $iffar-green-darker;
+        }
+        .addon-content, .filler{
+            background-color: $iffar-green;
+
+            a{
+                color: white;
+                background-image: linear-gradient(120deg, #000);
+            }
+        }
+    }
+    
+    .Pós-graduação, .Subsequente, .Tecnologia{
+        .main-content {
+            background-color: $iffar-green-even-darker;
+        }
+        .addon-content, .filler{
+            background-color: $iffar-green-darker;
+
+            a{
+                color: white;
+                background-image: linear-gradient(120deg, #000);
+            }
+        }
     }
