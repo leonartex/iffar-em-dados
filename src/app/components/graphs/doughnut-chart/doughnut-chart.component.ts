@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnChanges } from '@angular/core';
 import { ChartConfiguration, ChartData, ChartType } from 'chart.js';
 import { BarChartData } from 'src/app/shared/model/barChartData.model';
 
@@ -7,7 +7,7 @@ import { BarChartData } from 'src/app/shared/model/barChartData.model';
   templateUrl: './doughnut-chart.component.html',
   styleUrls: ['./doughnut-chart.component.scss']
 })
-export class DoughnutChartComponent {
+export class DoughnutChartComponent implements OnChanges{
 
   constructor() { }
 
@@ -26,8 +26,12 @@ export class DoughnutChartComponent {
   };
   public doughnutChartType: ChartType = 'doughnut';
 
-  ngOnInit(){
-    this.doughnutChartData.labels = this.data.labels;
-    this.doughnutChartData.datasets = this.data.datasets;
+  ngOnChanges(){
+    // this.doughnutChartData.labels = this.data.labels;
+    // this.doughnutChartData.datasets = this.data.datasets;
+    this.doughnutChartData = {
+      labels: this.data.labels,
+      datasets: this.data.datasets
+    };
   }
 }

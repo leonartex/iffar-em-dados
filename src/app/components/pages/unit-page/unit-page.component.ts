@@ -1,5 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { StringHelperService } from 'src/app/services/string-helper.service';
 import { UnitPageResponse } from 'src/app/shared/model/api/responses/unitPageResponse.model';
 import { Card } from 'src/app/shared/model/card.model';
 
@@ -9,6 +11,8 @@ import { Card } from 'src/app/shared/model/card.model';
   styleUrls: ['./unit-page.component.scss']
 })
 export class UnitPageComponent implements OnInit {
+  private campus: string;
+
   private apiUrl: string;
   
   public response: UnitPageResponse | null = null;
@@ -20,6 +24,8 @@ export class UnitPageComponent implements OnInit {
   public entryAndProgressInfo: any;
   public studentsProfile: any;
 
+  public stringHelper = new StringHelperService();
+
   public header: {
     type: string,
     title: Array<string>,
@@ -28,9 +34,11 @@ export class UnitPageComponent implements OnInit {
     cards: Array<Card>
   } | null = null;
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private route: ActivatedRoute){
+    this.campus = this.route.snapshot.paramMap.get('campus')!;
+
     this.apiUrl = 'http://localhost:3333/api';
-    this.http.get<UnitPageResponse>(`${this.apiUrl}/unit/sao-borja`)
+    this.http.get<UnitPageResponse>(`${this.apiUrl}/unit/${this.stringHelper.urlFriendly(this.campus)}`)
     .subscribe(res => {
       console.log(res);
       this.response = res;

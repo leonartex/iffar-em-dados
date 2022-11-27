@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnChanges, Input } from '@angular/core';
 import { ChartConfiguration, ChartData, ChartType } from 'chart.js';
 import { BarChartData } from 'src/app/shared/model/barChartData.model';
 
@@ -7,12 +7,14 @@ import { BarChartData } from 'src/app/shared/model/barChartData.model';
   templateUrl: './bar-chart.component.html',
   styleUrls: ['./bar-chart.component.scss']
 })
-export class BarChartComponent implements OnInit {
+export class BarChartComponent implements OnChanges {
 
   @Input() data: BarChartData = new BarChartData;
+  public width: number = 0;
+  public height: number = 0;
 
   public barChartOptions: ChartConfiguration['options'] = {
-    responsive: true,
+    responsive: false,
     maintainAspectRatio: true,
     indexAxis: 'y',
     scales: {
@@ -34,7 +36,7 @@ export class BarChartComponent implements OnInit {
         display: true,
         labels: {
           font: {
-              size: 22
+              size: 16
           }
       }
       },
@@ -49,9 +51,16 @@ export class BarChartComponent implements OnInit {
   constructor() {
   }
 
-  ngOnInit(): void {
-    this.barChartData.labels = this.data.labels;
-    this.barChartData.datasets = this.data.datasets;
+  ngOnChanges(): void {
+    // this.barChartData.labels = this.data.labels;
+    // this.barChartData.datasets = this.data.datasets;
+    this.height = 200 +this.data.datasets[0].data.length * 20;
+    this.width = 300;
+    
+    this.barChartData = {
+      labels: this.data.labels,
+      datasets: this.data.datasets
+    };
   }
 
 }

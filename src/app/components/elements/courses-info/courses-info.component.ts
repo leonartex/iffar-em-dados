@@ -1,4 +1,5 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnChanges, Input, Output, EventEmitter } from '@angular/core';
+import { StringHelperService } from 'src/app/services/string-helper.service';
 import CoursesInfo from 'src/app/shared/model/api/coursesInfo.model';
 import { BarChartData } from 'src/app/shared/model/barChartData.model';
 import { Card } from 'src/app/shared/model/card.model';
@@ -9,7 +10,7 @@ import ProcessedCoursesInfo from 'src/app/shared/model/processedInfo/processedCo
   templateUrl: './courses-info.component.html',
   styleUrls: ['./courses-info.component.scss']
 })
-export class CoursesInfoComponent implements OnInit {
+export class CoursesInfoComponent implements OnChanges {
   @Input() years: Array<string> = [];
 
   @Input() coursesInfo: Array<CoursesInfo> = [];
@@ -21,9 +22,15 @@ export class CoursesInfoComponent implements OnInit {
   public graduation: ProcessedCoursesInfo = new ProcessedCoursesInfo;
   public postGraduation: ProcessedCoursesInfo = new ProcessedCoursesInfo;
 
-  constructor() { }
+  public stringHelperService;
 
-  ngOnInit(): void {
+  @Output() changeCoursesInfoYear: EventEmitter<string> = new EventEmitter();
+
+  constructor() {
+    this.stringHelperService = new StringHelperService();
+  }
+
+  ngOnChanges(): void {
     this.mountCoursesInfo(this.coursesInfo);
   }
 
@@ -209,8 +216,9 @@ export class CoursesInfoComponent implements OnInit {
     return chartData;
   }
 
-  public onChangeYear(){
-    console.log("Evento: ")
+  public onChangeYear(year: string){
+    //Emito o alerta pra atualizar os dados
+    this.changeCoursesInfoYear.emit(year);
   }
 
   //Função auxiliar para criar a lista de cards dos cursos ofertados
@@ -256,7 +264,7 @@ export class CoursesInfoComponent implements OnInit {
         let sameCourse = coursesInfo[j];
         let addon = {
           description: sameCourse.cityName,
-          value: `/${this.urlFriendly(sameCourse.cityName)}/${this.urlFriendly(sameCourse.apiNameFiltered)}/${sameCourse.apiId}`,
+          value: `/${this.stringHelperService.urlFriendly(sameCourse.cityName)}/${this.stringHelperService.urlFriendly(sameCourse.apiNameFiltered)}/${sameCourse.apiId}`,
           type: 'link'
         };
         coursesInfo.splice(j, 1);
@@ -297,15 +305,6 @@ export class CoursesInfoComponent implements OnInit {
 
   public getDegrees(courses: Array<Card>): Array<string> {
     return [...new Set(courses.map(course => course.filterProperty!))];
-  }
-
-  public normalizeString(str: string): string {
-    return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
-  }
-
-
-  public urlFriendly(str: string): string {
-    return this.normalizeString(str).replace(/ /g, '-').toLowerCase();
   }
 
 }

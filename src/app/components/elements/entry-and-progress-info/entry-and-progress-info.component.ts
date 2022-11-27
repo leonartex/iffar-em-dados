@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnChanges, Input, Output, EventEmitter } from '@angular/core';
 import { EntryAndProgressInfo } from 'src/app/shared/model/api/entryAndProgressInfo.model';
 import { EntryMethod } from 'src/app/shared/model/api/entryMethod.model';
 import { RateCards } from 'src/app/shared/model/api/rateCards.model';
@@ -11,10 +11,12 @@ import { Card } from 'src/app/shared/model/card.model';
   templateUrl: './entry-and-progress-info.component.html',
   styleUrls: ['./entry-and-progress-info.component.scss']
 })
-export class EntryAndProgressInfoComponent implements OnInit {
+export class EntryAndProgressInfoComponent implements OnChanges {
   @Input() years: Array<string> = [];
 
   @Input() entryAndProgressInfo: EntryAndProgressInfo = new EntryAndProgressInfo;
+
+  @Output() changeEntryInfoYear: EventEmitter<string> = new EventEmitter();
 
   public colors = ['#0E3B43', '#205E3B', '#297F3E', '#CD191E', '#911216'];
 
@@ -24,7 +26,7 @@ export class EntryAndProgressInfoComponent implements OnInit {
 
   constructor() { }
 
-  ngOnInit(): void {
+  ngOnChanges(): void {
     this.rateCards = this.mountRateCards(this.entryAndProgressInfo.rateCards);
     this.entryMethods = this.mountEntryMethodsChart(this.entryAndProgressInfo.entryMethods);
     console.log(this.entryMethods);
@@ -121,8 +123,9 @@ export class EntryAndProgressInfoComponent implements OnInit {
     return chartData;
   }
 
-  public onChangeYear(){
-    
+  public onChangeYear(year: string){
+    //Emito o alerta pra atualizar os dados
+    this.changeEntryInfoYear.emit(year);
   }
 
 }

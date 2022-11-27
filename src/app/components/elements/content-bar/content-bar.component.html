@@ -1,7 +1,7 @@
 <div class="years-list">
     <ul>
         <li *ngFor="let year of years; index as i">
-            <button (click)="handleClick(year)" [ngClass]="i == 2 ? 'active' : ''">{{year}}</button>
+            <button (click)="handleClick(year)" [ngClass]="actualYear == year ? 'active' : ''">{{year}}</button>
         </li>
     </ul>
 </div>

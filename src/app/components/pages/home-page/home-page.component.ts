@@ -9,7 +9,7 @@ import { Card } from 'src/app/shared/model/card.model';
   styleUrls: ['./home-page.component.scss']
 })
 export class HomePageComponent implements OnInit {
-  private apiUrl: string;
+  private apiUrl: string = 'http://localhost:3333/api';
   
   public response: HomePageResponse | null = null;
   public map: any;
@@ -30,7 +30,10 @@ export class HomePageComponent implements OnInit {
   } | null = null;
 
   constructor(private http: HttpClient) {
-    this.apiUrl = 'http://localhost:3333/api';
+    
+  }
+
+  ngOnInit(): void {
     this.http.get<HomePageResponse>(`${this.apiUrl}/iffar`)
     .subscribe(res => {
       console.log(res);
@@ -39,12 +42,12 @@ export class HomePageComponent implements OnInit {
       this.map = this.response.map;
       this.units = this.response.units;
       
-      this.years = [...new Set(this.response.infoPerYear.map(infoP => infoP.year))];
-      this.years.sort((yearA, yearB) => {
-        let yA: string = yearA.toString().toUpperCase();
-        let yB: string = yearB.toString().toUpperCase();
+      this.response.infoPerYear.sort((infoA, infoB) => {
+        let yA: string = infoA.year.toString().toUpperCase();
+        let yB: string = infoB.year.toString().toUpperCase();
         return (yA < yB) ? -1 : (yA > yB) ? 1 : 0;
       }).reverse();
+      this.years = [...new Set(this.response.infoPerYear.map(infoP => infoP.year))];
 
       this.coursesInfo = this.response.infoPerYear[0].coursesInfo;
       this.projectsInfo = this.response.infoPerYear[0].projectsInfo;
@@ -56,9 +59,6 @@ export class HomePageComponent implements OnInit {
 
       this.header = this.mountHeader(res);
     })
-  }
-
-  ngOnInit(): void {
   }
 
   private mountHeader(res: HomePageResponse): {
@@ -98,6 +98,26 @@ export class HomePageComponent implements OnInit {
       background,
       cards
     }
+  }
+
+  public onChangeCoursesInfoYear(year: string){
+    let yearIndex = this.response!.infoPerYear.findIndex(info => info.year == year);
+    this.coursesInfo = this.response!.infoPerYear[yearIndex].coursesInfo;
+  }
+
+  public onChangeProjectsYear(year: string){
+    let yearIndex = this.response!.infoPerYear.findIndex(info => info.year == year);
+    this.projectsInfo = this.response!.infoPerYear[yearIndex].projectsInfo;
+  }
+
+  public onChangeEntryInfoYear(year: string){
+    let yearIndex = this.response!.infoPerYear.findIndex(info => info.year == year);
+    this.entryAndProgressInfo = this.response!.infoPerYear[yearIndex].entryAndProgressInfo;
+  }
+
+  public onChangeStudentsYear(year: string){
+    let yearIndex = this.response!.infoPerYear.findIndex(info => info.year == year);
+    this.studentsProfile = this.response!.infoPerYear[yearIndex].studentsProfile;
   }
 
 }

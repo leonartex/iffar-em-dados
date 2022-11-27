@@ -13,18 +13,22 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 export class ContentBarComponent implements OnInit {
 
   @Input() years: Array<string> = [];
+  @Input() actualYear: string = '';
 
   @Output() changeYear: EventEmitter<string> = new EventEmitter();
 
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit(): void {
+    this.actualYear = this.years[0]; //Por padrão coloco o primeiro ano, o mais atual como o ano setado para filtragem;
   }
 
   //Emite o evento para trocar o ano
   public handleClick(year: string){
     console.log(year);
     this.changeYear.emit(year);
+    this.actualYear = year;
   }
 
 }

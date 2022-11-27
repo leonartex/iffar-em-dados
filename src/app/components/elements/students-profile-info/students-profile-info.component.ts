@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnChanges, Input, Output, EventEmitter } from '@angular/core';
 import StudentsProfile from 'src/app/shared/model/api/studentsProfile.model';
 import { BarChartData } from 'src/app/shared/model/barChartData.model';
 
@@ -7,10 +7,12 @@ import { BarChartData } from 'src/app/shared/model/barChartData.model';
   templateUrl: './students-profile-info.component.html',
   styleUrls: ['./students-profile-info.component.scss']
 })
-export class StudentsProfileInfoComponent implements OnInit {
+export class StudentsProfileInfoComponent implements OnChanges {
   @Input() years: Array<string> = [];
 
   @Input() studentsProfile: StudentsProfile = new StudentsProfile;
+
+  @Output() changeStudentsYear: EventEmitter<string> = new EventEmitter();
 
   public colors = ['#0E3B43', '#205E3B', '#297F3E', '#CD191E', '#911216'];
 
@@ -21,7 +23,7 @@ export class StudentsProfileInfoComponent implements OnInit {
 
   constructor() { }
 
-  ngOnInit(): void {
+  ngOnChanges(): void {
     this.incomeDistribution = this.mountIncomeDistribution(this.studentsProfile);
     //console.log(this.incomeDistribution);
     
@@ -195,8 +197,11 @@ export class StudentsProfileInfoComponent implements OnInit {
     return ageGroupChart;
   }
 
-  public onChangeYear(){
-    
+  public onChangeYear(year: string){
+    //Emito o alerta pra atualizar os dados
+    console.log('Students: '+year);
+    this.changeStudentsYear.emit(year);
+    this.genderDistribution;
   }
 
   //Função para trocar elementos de array de posição: https://stackoverflow.com/questions/4011629/swapping-two-items-in-a-javascript-array

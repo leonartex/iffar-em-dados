@@ -1,4 +1,4 @@
-import { Component, OnInit, Input} from '@angular/core';
+import { Component, OnChanges, Input, Output, EventEmitter} from '@angular/core';
 import { ProjectsInfo } from 'src/app/shared/model/api/projectsInfo.model';
 import { BarChartData } from 'src/app/shared/model/barChartData.model';
 import { Card } from 'src/app/shared/model/card.model';
@@ -9,18 +9,21 @@ import ProcessedProjectsInfo from 'src/app/shared/model/processedInfo/processedP
   templateUrl: './projects-info.component.html',
   styleUrls: ['./projects-info.component.scss']
 })
-export class ProjectsInfoComponent implements OnInit {
+export class ProjectsInfoComponent implements OnChanges {
   @Input() years: Array<string> = [];
   
   @Input() projectsInfo: Array<ProjectsInfo> = [];
+  
+  @Output() changeProjectsYear: EventEmitter<string> = new EventEmitter();
 
   public colors = ['#0E3B43', '#205E3B', '#297F3E', '#CD191E', '#911216'];
 
   public projects: ProcessedProjectsInfo = new ProcessedProjectsInfo;
 
+
   constructor() { }
 
-  ngOnInit(): void {
+  ngOnChanges(): void {
     this.projects.cards = this.mountMainCards(this.projectsInfo);
     this.projects.projectsByType = this.mountProjectsByType(this.projectsInfo);
     console.log(this.projects.projectsByType)
@@ -182,8 +185,9 @@ export class ProjectsInfoComponent implements OnInit {
     
   }
 
-  public onChangeYear(){
-
+  public onChangeYear(year: string){
+    //Emito o alerta pra atualizar os dados
+    this.changeProjectsYear.emit(year);
   }
 
 }

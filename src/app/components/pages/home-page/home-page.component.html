@@ -11,16 +11,16 @@
             <app-units-map [mapData]="map" [unitsData]="units"></app-units-map>
         </div>
         <div>
-            <app-courses-info [coursesInfo]="coursesInfo" [years]="years"></app-courses-info>
+            <app-courses-info (changeCoursesInfoYear)="onChangeCoursesInfoYear($event)" [coursesInfo]="coursesInfo" [years]="years"></app-courses-info>
         </div>
         <div>
-            <app-projects-info [projectsInfo]="projectsInfo" [years]="years"></app-projects-info>
+            <app-projects-info (changeProjectsYear)="onChangeProjectsYear($event)" [projectsInfo]="projectsInfo" [years]="years"></app-projects-info>
         </div>
         <div>
-            <app-entry-and-progress-info [entryAndProgressInfo]="entryAndProgressInfo" [years]="years"></app-entry-and-progress-info>
+            <app-entry-and-progress-info (changeEntryInfoYear)="onChangeEntryInfoYear($event)" [entryAndProgressInfo]="entryAndProgressInfo" [years]="years"></app-entry-and-progress-info>
         </div>
         <div>
-            <app-students-profile-info [studentsProfile]="studentsProfile" [years]="years"></app-students-profile-info>
+            <app-students-profile-info (changeStudentsYear)="onChangeStudentsYear($event)" [studentsProfile]="studentsProfile" [years]="years"></app-students-profile-info>
         </div>
     </div>
 </div>

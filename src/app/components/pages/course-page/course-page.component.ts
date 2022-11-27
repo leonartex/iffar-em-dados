@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import CourseInfo from 'src/app/shared/model/api/courseInfo.model';
 import { EntryMethod } from 'src/app/shared/model/api/entryMethod.model';
 import { RateCards } from 'src/app/shared/model/api/rateCards.model';
@@ -16,6 +17,9 @@ import { ProcessedInfo } from 'src/app/shared/model/processedInfo.model';
   styleUrls: ['./course-page.component.scss']
 })
 export class CoursePageComponent implements OnInit {
+  private courseName: string;
+  private courseId: string;
+
   private apiUrl: string;
   
   public response: CoursePageResponse | null = null;
@@ -34,9 +38,12 @@ export class CoursePageComponent implements OnInit {
     cards: Array<Card>
   } | null = null;
 
-  constructor(private http: HttpClient){
+  constructor(private http: HttpClient, private route: ActivatedRoute){
+    this.courseName = this.route.snapshot.paramMap.get('courseName')!;
+    this.courseId = this.route.snapshot.paramMap.get('courseId')!;
+
     this.apiUrl = 'http://localhost:3333/api';
-    this.http.get<CoursePageResponse>(`${this.apiUrl}/course/66658`)
+    this.http.get<CoursePageResponse>(`${this.apiUrl}/course/${this.courseId}`)
     .subscribe(res => {
       console.log(res);
       this.response = res;

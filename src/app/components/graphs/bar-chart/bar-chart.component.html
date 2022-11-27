@@ -1,6 +1,6 @@
 <div class="barchart">
-    <div class="chartWrapper">
-        <canvas baseChart 
+    <div class="chartWrapper" [style.height]="height+'px'" [style.width]="width">
+        <canvas [width]="width" [height]="height" baseChart 
             [data]="barChartData" 
             [options]="barChartOptions"
             [type]="barChartType">

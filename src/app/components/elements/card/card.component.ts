@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnChanges, Input } from '@angular/core';
 import { Card } from 'src/app/shared/model/card.model';
 
 @Component({
@@ -6,13 +6,14 @@ import { Card } from 'src/app/shared/model/card.model';
   templateUrl: './card.component.html',
   styleUrls: ['./card.component.scss']
 })
-export class CardComponent implements OnInit {
+export class CardComponent implements OnChanges {
   
   @Input() cardData: Card = new Card;
 
   constructor() { }
 
-  ngOnInit(): void {
+  ngOnChanges(): void {
+    if(this.cardData.value == null || this.cardData.value == undefined){}
   }
 
 }

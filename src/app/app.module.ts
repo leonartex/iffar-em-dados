@@ -22,6 +22,7 @@ import { HeaderComponent } from './components/elements/header/header.component';
 import { LogoSvgComponent } from './components/elements/logo-svg/logo-svg.component';
 import { UnitsMapComponent } from './components/elements/units-map/units-map.component';
 import { CourseDetailingComponent } from './components/elements/course-detailing/course-detailing.component';
+import { StringHelperPipe } from './shared/pipes/StringHelper.pipe';
 
 @NgModule({
   declarations: [
@@ -41,7 +42,9 @@ import { CourseDetailingComponent } from './components/elements/course-detailing
     HeaderComponent,
     LogoSvgComponent,
     UnitsMapComponent,
-    CourseDetailingComponent
+    CourseDetailingComponent,
+    
+    StringHelperPipe
   ],
   imports: [
     BrowserModule,
