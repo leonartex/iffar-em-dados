@@ -1,17 +1,19 @@
 .barchart {
-    position: relative;
-    height: 400px;
-    overflow: scroll;
+    // position: relative;
+    // height: 400px;
+    // overflow: scroll;
 
     .chartWrapper {
-        height: 15000px;
-        
+        // height: 15000px;
+        display: block;
 
         canvas {
-            position: absolute;
-            left: 0;
-            top: 0;
-            pointer-events: none;
+            display: block;
+            width: 100%;
+            // position: absolute;
+            // left: 0;
+            // top: 0;
+            // pointer-events: none;
         }
     }
 }

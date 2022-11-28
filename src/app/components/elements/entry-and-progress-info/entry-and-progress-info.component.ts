@@ -1,4 +1,5 @@
 import { Component, OnChanges, Input, Output, EventEmitter } from '@angular/core';
+import { StringHelperService } from 'src/app/services/string-helper.service';
 import { EntryAndProgressInfo } from 'src/app/shared/model/api/entryAndProgressInfo.model';
 import { EntryMethod } from 'src/app/shared/model/api/entryMethod.model';
 import { RateCards } from 'src/app/shared/model/api/rateCards.model';
@@ -12,6 +13,8 @@ import { Card } from 'src/app/shared/model/card.model';
   styleUrls: ['./entry-and-progress-info.component.scss']
 })
 export class EntryAndProgressInfoComponent implements OnChanges {
+  public stringHelperService = new StringHelperService();
+
   @Input() years: Array<string> = [];
 
   @Input() entryAndProgressInfo: EntryAndProgressInfo = new EntryAndProgressInfo;
@@ -61,17 +64,20 @@ export class EntryAndProgressInfoComponent implements OnChanges {
     cards.push(concludingStudentsCard);
 
     //Para o card de estudantes evadidos é necessário processar todos os motivos de evasão para somar tudo posteriormente
-    let dropoutAdditional = [
-      {description: "Matrículas descontinuadas", value: rateCards.dropoutStudents.discontinued},
-      {description: "Matrículas canceladas", value: rateCards.dropoutStudents.cancelled},
-      {description: "Matrículas abandonadas", value: rateCards.dropoutStudents.abandoned},
-      {description: "Matrículas reprovadas", value: rateCards.dropoutStudents.reproved},
-      {description: "Transferência externa", value: rateCards.dropoutStudents.externalTransfer},
-      {description: "Transferência interna", value: rateCards.dropoutStudents.internalTransfer},
-    ].filter(item => item.value > 0); //Filtro os zerados para reduzir o tamanho do addon do card
-    let dropoutTotal = dropoutAdditional.reduce((total, item) => total + item.value, 0);
     dropoutStudentsCard.description = 'Matrículas evadidas';
-    dropoutStudentsCard.value = dropoutTotal;
+    if(rateCards.dropoutStudents != undefined && rateCards.dropoutStudents != null){
+      let dropoutAdditional: Array<{description: string, value: number, type: string}> = [
+        {description: "Matrículas descontinuadas", value: rateCards.dropoutStudents.discontinued, type: 'default'},
+        {description: "Matrículas canceladas", value: rateCards.dropoutStudents.cancelled, type: 'default'},
+        {description: "Matrículas abandonadas", value: rateCards.dropoutStudents.abandoned, type: 'default'},
+        {description: "Matrículas reprovadas", value: rateCards.dropoutStudents.reproved, type: 'default'},
+        {description: "Transferência externa", value: rateCards.dropoutStudents.externalTransfer, type: 'default'},
+        {description: "Transferência interna", value: rateCards.dropoutStudents.internalTransfer, type: 'default'},
+      ].filter(item => item.value > 0); //Filtro os zerados para reduzir o tamanho do addon do card
+      let dropoutTotal = dropoutAdditional.reduce((total, item) => total + item.value, 0);
+      dropoutStudentsCard.value = dropoutTotal;
+      //dropoutStudentsCard.additionalInfo = dropoutAdditional;
+    }
     cards.push(dropoutStudentsCard);
 
     return cards;
@@ -89,8 +95,11 @@ export class EntryAndProgressInfoComponent implements OnChanges {
 
     //Percorro todos os métodos de entrada para montar os dados necessários para montar um gráfico
     for(let entryMethod of entryMethods){
-      chartData.labels.push(entryMethod.entryMethodDescription);
-      chartData.datasets[0].data.push(entryMethod.total);
+      if(entryMethod.entryMethodDescription != undefined)
+        chartData.labels.push(this.stringHelperService.portugueseTitleCase(entryMethod.entryMethodDescription));
+      else
+        chartData.labels.push("Dado em branco");
+        chartData.datasets[0].data.push(entryMethod.total);
     }
 
     return chartData;
@@ -100,7 +109,7 @@ export class EntryAndProgressInfoComponent implements OnChanges {
     let chartData = new BarChartData();
 
     if(slotReservationOptions == null || slotReservationOptions == undefined){
-      chartData.labels = ['AC', 'L1', 'L2', 'L5', 'L6', 'L9', 'L10', 'L13', 'L14'];
+      // chartData.labels = ['AC', 'L1', 'L2', 'L5', 'L6', 'L9', 'L10', 'L13', 'L14'];
 
       return chartData;
     }

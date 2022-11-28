@@ -200,7 +200,7 @@ export class CoursesInfoComponent implements OnChanges {
   private mountKnowledgeAreaGraph(coursesInfo: Array<CoursesInfo>): BarChartData {
     let chartData = new BarChartData;
     //Crio a lista de labels
-    chartData.labels = [...new Set(coursesInfo.map(course => course.knowledgeArea))];
+    chartData.labels = [...new Set(coursesInfo.map(course => this.stringHelperService.portugueseTitleCase(course.knowledgeArea)))];
 
     chartData.datasets = [{
       label: 'Cursos',
@@ -209,7 +209,7 @@ export class CoursesInfoComponent implements OnChanges {
     }]
     //E depois percorro ela para contar quantos cursos possui cada um
     for (let label of chartData.labels) {
-      let courses = coursesInfo.filter(course => course.knowledgeArea == label);
+      let courses = coursesInfo.filter(course => this.stringHelperService.portugueseTitleCase(course.knowledgeArea) == label);
       chartData.datasets[0].data.push(courses.length)
     }
 
@@ -225,8 +225,8 @@ export class CoursesInfoComponent implements OnChanges {
   private mountCoursesCards(coursesInfo: Array<CoursesInfo>): Array<Card> {
     let coursesCards: Array<Card> = [];
 
-    for (let i = 0; i < coursesInfo.length; i++) {
-      let course = coursesInfo[i];
+    while (coursesInfo.length > 0) {
+      let course = coursesInfo[0];
       //Faço o card para o curso da unidade de ensino
       let courseCard = new Card;
       courseCard.type = 'only-title';
@@ -240,42 +240,51 @@ export class CoursesInfoComponent implements OnChanges {
       courseCard.filterProperty = course.degree;
 
       //Filtro os cursos que se encaixam como um mesmo curso numa lista com todos os cursos da instituição (todas as 5 características que identificam um curso iguais, exceto o nome da cidade) (será feito depois) (crio uma variável global com a lista de todos os cursos)
-      // let sameCourses = coursesInfo.filter(courseI =>
-      //   courseI.apiNameFiltered == course.apiNameFiltered &&
-      //   courseI.degree == course.degree &&
-      //   courseI.level == course.level &&
-      //   courseI.modality == course.modality);
+      let sameCourses = coursesInfo.filter(courseI =>
+        courseI.apiNameFiltered == course.apiNameFiltered &&
+        courseI.degree == course.degree &&
+        courseI.level == course.level &&
+        courseI.modality == course.modality);
 
-      //Monto o addon do card
+      //Monto o addon do card com os dados de todos os cursos ofertados (pego novamente o mesmo curso, porém, para dessa vez adicionar como addon)
       let addons: Array<any> = []
-      addons.push({ description: 'Ofertado em', value: null, type: 'small-title' })
-      while (coursesInfo.findIndex(courseI => {
-        return courseI.apiNameFiltered == course.apiNameFiltered &&
-          courseI.degree == course.degree &&
-          courseI.level == course.level &&
-          courseI.modality == course.modality
-      }) >= 0) {
-        let j = coursesInfo.findIndex(courseI => {
-          return courseI.apiNameFiltered == course.apiNameFiltered &&
-            courseI.degree == course.degree &&
-            courseI.level == course.level &&
-            courseI.modality == course.modality
-        });
-        let sameCourse = coursesInfo[j];
+      for(let sameCourse of sameCourses){
         let addon = {
-          description: sameCourse.cityName,
-          value: `/${this.stringHelperService.urlFriendly(sameCourse.cityName)}/${this.stringHelperService.urlFriendly(sameCourse.apiNameFiltered)}/${sameCourse.apiId}`,
-          type: 'link'
-        };
-        coursesInfo.splice(j, 1);
+              description: sameCourse.cityName,
+              value: `/${this.stringHelperService.urlFriendly(sameCourse.cityName)}/${this.stringHelperService.urlFriendly(sameCourse.apiNameFiltered)}/${sameCourse.apiId}`,
+              type: 'link'
+            };
+    
+            addons.push(addon)
 
-        addons.push(addon)
+            //Removo da lista o curso que já foi adicionado como addon
+            let courseIndex = coursesInfo.findIndex(courseI => courseI == sameCourse);
+            coursesInfo.splice(courseIndex, 1);
       }
-      courseCard.additionalInfo = addons;
+      // addons.push({ description: 'Ofertado em', value: null, type: 'small-title' })
+      // while (coursesInfo.findIndex(courseI => {
+      //   return courseI.apiNameFiltered == course.apiNameFiltered &&
+      //     courseI.degree == course.degree &&
+      //     courseI.level == course.level &&
+      //     courseI.modality == course.modality
+      // }) >= 0) {
+      //   let j = coursesInfo.findIndex(courseI => {
+      //     return courseI.apiNameFiltered == course.apiNameFiltered &&
+      //       courseI.degree == course.degree &&
+      //       courseI.level == course.level &&
+      //       courseI.modality == course.modality
+      //   });
+      //   let sameCourse = coursesInfo[j];
+      //   let addon = {
+      //     description: sameCourse.cityName,
+      //     value: `/${this.stringHelperService.urlFriendly(sameCourse.cityName)}/${this.stringHelperService.urlFriendly(sameCourse.apiNameFiltered)}/${sameCourse.apiId}`,
+      //     type: 'link'
+      //   };
+      //   coursesInfo.splice(j, 1);
 
-      //Removo eles da lista
-      // let apiUsedId = [...new Set(sameCourses)]
-      // coursesInfo = coursesInfo.filter(courseI => sameCourses.find(sameC => sameC.apiId == courseI.apiId) == undefined);
+      //   addons.push(addon)
+      // }
+      courseCard.additionalInfo = addons;
 
       //Adiciono o card à lista
       coursesCards.push(courseCard);

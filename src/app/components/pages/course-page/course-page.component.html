@@ -11,10 +11,10 @@
             <app-course-detailing [courseDetalingInfo]="courseDetailing"></app-course-detailing>
         </div>
         <div>
-            <app-entry-and-progress-info [entryAndProgressInfo]="entryAndProgressInfo" [years]="years"></app-entry-and-progress-info>
+            <app-entry-and-progress-info (changeEntryInfoYear)="onChangeEntryInfoYear($event)" [entryAndProgressInfo]="entryAndProgressInfo" [years]="years"></app-entry-and-progress-info>
         </div>
         <div>
-            <app-students-profile-info [studentsProfile]="studentsProfile" [years]="years"></app-students-profile-info>
+            <app-students-profile-info (changeStudentsYear)="onChangeStudentsYear($event)" [studentsProfile]="studentsProfile" [years]="years"></app-students-profile-info>
         </div>
     </div>
 </div>

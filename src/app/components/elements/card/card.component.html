@@ -1,16 +1,25 @@
 <div class="card" [ngClass]="cardData.type +' '+cardData.filterProperty" [class.reverse]="cardData.reverse">
     <div class="main-content">
         <h3 class="title">
+            <ng-template #thenBlock>
+                <span class="visually-hidden">Dado não encontrado:</span>
+                <span class="emdash">&#8212;</span>
+            </ng-template>
+            <ng-template #elseBlock>{{cardData.value! | string:'capitalise'}}</ng-template>
             <!-- Se o tipo for default -->
             <span class="description" *ngIf="cardData.type == 'default'">{{cardData.description}}<span class="visually-hidden">:</span></span> 
-            <span *ngIf="cardData.type == 'default'" class="value">{{cardData.value}}</span>
+            <span *ngIf="cardData.type == 'default'" class="value">
+                <span *ngIf="cardData.value == null; then thenBlock else elseBlock"></span>                
+            </span>
 
             <!-- Se o tipo for only-title -->
             <span class="description" *ngIf="cardData.type == 'only-title'">{{cardData.description}}</span>
 
             <!-- Se o tipo for small-upper-title -->
             <span class="description" *ngIf="cardData.type == 'small-upper-title'">{{cardData.description}}<span class="visually-hidden">:</span></span> 
-            <span *ngIf="cardData.type == 'small-upper-title'" class="value">{{cardData.value}}</span>
+            <span *ngIf="cardData.type == 'small-upper-title'" class="value">
+                <span *ngIf="cardData.value == null; then thenBlock else elseBlock"></span>
+            </span>
         </h3>
     </div>
     <div *ngIf="cardData.additionalInfo" class="filler"></div>

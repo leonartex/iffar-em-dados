@@ -1,6 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { Location } from '@angular/common';
+
 import { StringHelperService } from 'src/app/services/string-helper.service';
 import { UnitPageResponse } from 'src/app/shared/model/api/responses/unitPageResponse.model';
 import { Card } from 'src/app/shared/model/card.model';
@@ -11,10 +13,12 @@ import { Card } from 'src/app/shared/model/card.model';
   styleUrls: ['./unit-page.component.scss']
 })
 export class UnitPageComponent implements OnInit {
+  public stringHelperService = new StringHelperService();
+
   private campus: string;
 
-  private apiUrl: string;
-  
+  private apiUrl: string = 'http://localhost:3333/api';
+
   public response: UnitPageResponse | null = null;
   public units: any;
 
@@ -34,35 +38,39 @@ export class UnitPageComponent implements OnInit {
     cards: Array<Card>
   } | null = null;
 
-  constructor(private http: HttpClient, private route: ActivatedRoute){
+  constructor(private http: HttpClient, private route: ActivatedRoute, private location: Location) {
     this.campus = this.route.snapshot.paramMap.get('campus')!;
-
-    this.apiUrl = 'http://localhost:3333/api';
-    this.http.get<UnitPageResponse>(`${this.apiUrl}/unit/${this.stringHelper.urlFriendly(this.campus)}`)
-    .subscribe(res => {
-      console.log(res);
-      this.response = res;
-
-      this.header = this.mountHeader(res);
-
-      this.years = [...new Set(this.response.infoPerYear.map(infoP => infoP.year))];
-      this.years.sort((yearA, yearB) => {
-        let yA: string = yearA.toString().toUpperCase();
-        let yB: string = yearB.toString().toUpperCase();
-        return (yA < yB) ? -1 : (yA > yB) ? 1 : 0;
-      }).reverse();
-
-      this.coursesInfo = this.response.infoPerYear[0].coursesInfo;
-      this.projectsInfo = this.response.infoPerYear[0].projectsInfo;
-      this.projectsInfo = this.response.infoPerYear[0].projectsInfo;
-      this.entryAndProgressInfo = this.response.infoPerYear[0].entryAndProgressInfo;
-      this.studentsProfile = this.response.infoPerYear[0].studentsProfile;
-
-      console.log(this.response.infoPerYear[0].projectsInfo);
-    })
   }
 
   ngOnInit(): void {
+    this.http.get<UnitPageResponse>(`${this.apiUrl}/unit/${this.stringHelper.urlFriendly(this.campus)}`)
+      .subscribe(res => {
+        console.log(res);
+        this.response = res;
+
+        let urlCampusCity = this.stringHelperService.urlFriendly(res.units[0].city.cityName);
+
+        if (this.campus != urlCampusCity) {
+          this.location.replaceState(`${urlCampusCity}`);
+        }
+
+        this.header = this.mountHeader(res);
+
+        this.response.infoPerYear.sort((infoA, infoB) => {
+          let yA: string = infoA.year.toString().toUpperCase();
+          let yB: string = infoB.year.toString().toUpperCase();
+          return (yA < yB) ? -1 : (yA > yB) ? 1 : 0;
+        }).reverse();
+        this.years = [...new Set(this.response.infoPerYear.map(infoP => infoP.year))];
+
+        this.coursesInfo = this.response.infoPerYear[0].coursesInfo;
+        this.projectsInfo = this.response.infoPerYear[0].projectsInfo;
+        this.projectsInfo = this.response.infoPerYear[0].projectsInfo;
+        this.entryAndProgressInfo = this.response.infoPerYear[0].entryAndProgressInfo;
+        this.studentsProfile = this.response.infoPerYear[0].studentsProfile;
+
+        console.log(this.response.infoPerYear[0].projectsInfo);
+      })
   }
 
   private mountHeader(res: UnitPageResponse): {
@@ -71,14 +79,14 @@ export class UnitPageComponent implements OnInit {
     breadcrumb: Array<any>,
     background: Array<string>,
     cards: Array<Card>
-  }{
+  } {
     let type: string = 'campus';
 
     let title: Array<string> = [];
-    switch (res.units[0].type){
+    switch (res.units[0].type) {
       case 'campus':
-          title.push('Campus');
-          break;
+        title.push('Campus');
+        break;
       case 'advanced-campus':
         title.push('Campus Avançado');
         break;
@@ -87,7 +95,7 @@ export class UnitPageComponent implements OnInit {
     }
     title.push(res.units[0].city.cityName);
 
-    let breadcrumb: Array<any> = [{label: 'Início', url: '/'}, {label: res.units[0].city.cityName, url: '/sao-borja/'}];
+    let breadcrumb: Array<any> = [{ label: 'Início', url: '/' }, { label: res.units[0].city.cityName, url: '/sao-borja/' }];
 
     let background = res.infoPerYear[0].coursesInfo.map(course => course.apiNameFiltered);
 
@@ -101,7 +109,7 @@ export class UnitPageComponent implements OnInit {
     let studentsCard = new Card;
     studentsCard.description = "Alunos matriculados";
     studentsCard.value = res.infoPerYear[0].entryAndProgressInfo.rateCards.enrolledStudents;
-    cards.push(studentsCard); 
+    cards.push(studentsCard);
 
     return {
       type,
@@ -110,6 +118,26 @@ export class UnitPageComponent implements OnInit {
       background,
       cards
     }
+  }
+
+  public onChangeCoursesInfoYear(year: string) {
+    let yearIndex = this.response!.infoPerYear.findIndex(info => info.year == year);
+    this.coursesInfo = this.response!.infoPerYear[yearIndex].coursesInfo;
+  }
+
+  public onChangeProjectsYear(year: string) {
+    let yearIndex = this.response!.infoPerYear.findIndex(info => info.year == year);
+    this.projectsInfo = this.response!.infoPerYear[yearIndex].projectsInfo;
+  }
+
+  public onChangeEntryInfoYear(year: string) {
+    let yearIndex = this.response!.infoPerYear.findIndex(info => info.year == year);
+    this.entryAndProgressInfo = this.response!.infoPerYear[yearIndex].entryAndProgressInfo;
+  }
+
+  public onChangeStudentsYear(year: string) {
+    let yearIndex = this.response!.infoPerYear.findIndex(info => info.year == year);
+    this.studentsProfile = this.response!.infoPerYear[yearIndex].studentsProfile;
   }
 
 }

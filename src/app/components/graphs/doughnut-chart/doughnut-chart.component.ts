@@ -12,6 +12,7 @@ export class DoughnutChartComponent implements OnChanges{
   constructor() { }
 
   @Input() data: BarChartData = new BarChartData;
+  public isEmpty: boolean = true;
 
   public barChartOptions: ChartConfiguration['options'] = {
     plugins: {
@@ -29,9 +30,25 @@ export class DoughnutChartComponent implements OnChanges{
   ngOnChanges(){
     // this.doughnutChartData.labels = this.data.labels;
     // this.doughnutChartData.datasets = this.data.datasets;
+    this.isEmpty = this.checkEmpty();
+    
+
     this.doughnutChartData = {
       labels: this.data.labels,
       datasets: this.data.datasets
     };
+  }
+
+  public checkEmpty(){
+    if(this.data == undefined || this.data == null)
+      return true;
+    else if(this.data.datasets.length <= 0 || this.data.labels.filter(l => l != null).length <= 0)
+      return true;
+    else if (this.data.datasets[0].data.length <= 0)
+      return true;
+    else{
+      let fullDatasetEmpty = (this.data.datasets[0].data.filter(v => v != null)).length <= 0;
+      return fullDatasetEmpty;
+    }    
   }
 }

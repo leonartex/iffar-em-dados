@@ -1,4 +1,5 @@
 import { Component, OnChanges, Input, Output, EventEmitter } from '@angular/core';
+import { StringHelperService } from 'src/app/services/string-helper.service';
 import StudentsProfile from 'src/app/shared/model/api/studentsProfile.model';
 import { BarChartData } from 'src/app/shared/model/barChartData.model';
 
@@ -21,7 +22,11 @@ export class StudentsProfileInfoComponent implements OnChanges {
   public genderDistribution: BarChartData = new BarChartData;
   public ageDistribution: BarChartData = new BarChartData;
 
-  constructor() { }
+  public stringHelperService;
+
+  constructor() {
+    this.stringHelperService = new StringHelperService();
+  }
 
   ngOnChanges(): void {
     this.incomeDistribution = this.mountIncomeDistribution(this.studentsProfile);
@@ -87,10 +92,10 @@ export class StudentsProfileInfoComponent implements OnChanges {
     //console.log(racialDistribution);
 
     //Crio os labels
-    racialDistributionChart.labels = [...new Set(racialDistribution.map(racialDistEl => racialDistEl.description))].sort();
+    racialDistributionChart.labels = [...new Set(racialDistribution.map(racialDistEl => this.stringHelperService.portugueseTitleCase(racialDistEl.description)))].sort();
     
     //Faço o label de informação não declarada ficar por último. Fonte: https://stackoverflow.com/questions/24909371/move-item-in-array-to-last-position
-    racialDistributionChart.labels.push(racialDistributionChart.labels.splice(racialDistributionChart.labels.indexOf('NÃO DECLARADA'), 1)[0]);
+    racialDistributionChart.labels.push(racialDistributionChart.labels.splice(racialDistributionChart.labels.indexOf('Não Declarada'), 1)[0]);
     //console.log(racialDistributionChart.labels);
 
     racialDistributionChart.datasets.push({
@@ -100,7 +105,7 @@ export class StudentsProfileInfoComponent implements OnChanges {
     })
     //Percorro o array de labels para realizar a respectiva adição dos valores
     for(let i = 0; i < racialDistributionChart.labels.length; i++){
-      let data = racialDistribution.find(racialDistEl => racialDistEl.description == racialDistributionChart.labels[i]);
+      let data = racialDistribution.find(racialDistEl => this.stringHelperService.portugueseTitleCase(racialDistEl.description) == racialDistributionChart.labels[i]);
 
       if(data){
         //Transformo os objetos sobre renda familiar apenas no número de estudantes que existem em cada tipo
@@ -118,9 +123,9 @@ export class StudentsProfileInfoComponent implements OnChanges {
   private mountGenderDistribution(studentsProfile: StudentsProfile): BarChartData{
     let genderChart = new BarChartData();
     if(studentsProfile == null || studentsProfile == undefined){
-      genderChart.labels = [
-        "---"
-    ];
+      // genderChart.labels = [
+      //   "---"
+      // ];
       return genderChart;
     }
 
@@ -147,19 +152,31 @@ export class StudentsProfileInfoComponent implements OnChanges {
     for(let i = 0; i < genderChart.labels.length; i++){
       let totalStudents = gender.reduce((total, current) => current.description == genderChart.labels[i] ? total + current.total : total, 0);
       genderChart.datasets[0].data.push(totalStudents);
+
+      //Formato o nome do label
+      switch(genderChart.labels[i]){
+        case 'F':
+          genderChart.labels[i] = 'Feminino';
+          break;
+        case 'M':
+          genderChart.labels[i] = 'Masculino';
+          break;
+        case 'S/I':
+          genderChart.labels[i] = 'Sem identificação';
+          break;
+      }
     }
 
     return genderChart;
   }
 
   private mountAgeGroupDistribution(studentsProfile: StudentsProfile, steps: number = 5): BarChartData{
-    console.log('Distribuição por idade:');
     let ageGroupChart = new BarChartData;
 
     if(studentsProfile == null || studentsProfile == undefined){
-      ageGroupChart.labels = [
-        "---",
-      ];
+      // ageGroupChart.labels = [
+      //   "---",
+      // ];
       return ageGroupChart;
     }
 
@@ -190,6 +207,12 @@ export class StudentsProfileInfoComponent implements OnChanges {
         //Agora uso reduce() para somar todos esses valores, assim, retornando o total de estudantes de determinada cor ou raça
         let totalStudents = students.reduce((total, current) => total + current);
         ageGroupChart.datasets[0].data.push(totalStudents)
+      }
+
+      switch(ageGroupChart.labels[i]){
+        case 'S/I':
+          ageGroupChart.labels[i] = 'Sem identificação';
+          break;
       }
     }
 

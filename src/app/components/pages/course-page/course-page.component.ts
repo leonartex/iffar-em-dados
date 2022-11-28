@@ -1,6 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import {Location} from '@angular/common';
+
+import { StringHelperService } from 'src/app/services/string-helper.service';
 import CourseInfo from 'src/app/shared/model/api/courseInfo.model';
 import { EntryMethod } from 'src/app/shared/model/api/entryMethod.model';
 import { RateCards } from 'src/app/shared/model/api/rateCards.model';
@@ -17,10 +20,13 @@ import { ProcessedInfo } from 'src/app/shared/model/processedInfo.model';
   styleUrls: ['./course-page.component.scss']
 })
 export class CoursePageComponent implements OnInit {
+  public stringHelperService = new StringHelperService();
+
+  private campusName: string;
   private courseName: string;
   private courseId: string;
 
-  private apiUrl: string;
+  private apiUrl: string = 'http://localhost:3333/api';
   
   public response: CoursePageResponse | null = null;
   public units: any;
@@ -38,35 +44,40 @@ export class CoursePageComponent implements OnInit {
     cards: Array<Card>
   } | null = null;
 
-  constructor(private http: HttpClient, private route: ActivatedRoute){
+  constructor(private http: HttpClient, private route: ActivatedRoute, private location: Location){
+    this.campusName = this.route.snapshot.paramMap.get('campus')!;
     this.courseName = this.route.snapshot.paramMap.get('courseName')!;
     this.courseId = this.route.snapshot.paramMap.get('courseId')!;
+  }
 
-    this.apiUrl = 'http://localhost:3333/api';
+  ngOnInit(){
     this.http.get<CoursePageResponse>(`${this.apiUrl}/course/${this.courseId}`)
     .subscribe(res => {
       console.log(res);
       this.response = res;
 
+      let urlCampusCity = this.stringHelperService.urlFriendly(res.courseDetailing.city);
+      let urlCourseName = this.stringHelperService.urlFriendly(res.courseDetailing.apiNameFiltered);
+
+      if(this.campusName !=  urlCampusCity || this.courseName != urlCourseName){
+        this.location.replaceState(`${urlCampusCity}/${urlCourseName}/${this.courseId}`);
+      }
+
       this.header = this.mountHeader(res);
 
       this.courseDetailing = res.courseDetailing;
 
-      this.years = [...new Set(this.response.infoPerYear.map(infoP => infoP.year))];
-      this.years.sort((yearA, yearB) => {
-        let yA: string = yearA.toString().toUpperCase();
-        let yB: string = yearB.toString().toUpperCase();
+      this.response.infoPerYear.sort((infoA, infoB) => {
+        let yA: string = infoA.year.toString().toUpperCase();
+        let yB: string = infoB.year.toString().toUpperCase();
         return (yA < yB) ? -1 : (yA > yB) ? 1 : 0;
       }).reverse();
+      this.years = [...new Set(this.response.infoPerYear.map(infoP => infoP.year))];
 
       this.entryAndProgressInfo = this.response.infoPerYear[0].entryAndProgressInfo;
       this.studentsProfile = this.response.infoPerYear[0].studentsProfile;
 
     })
-  }
-
-  ngOnInit(){
-    
   }
 
   private mountHeader(res: CoursePageResponse): {
@@ -102,6 +113,16 @@ export class CoursePageComponent implements OnInit {
       background,
       cards
     }
+  }  
+
+  public onChangeEntryInfoYear(year: string) {
+    let yearIndex = this.response!.infoPerYear.findIndex(info => info.year == year);
+    this.entryAndProgressInfo = this.response!.infoPerYear[yearIndex].entryAndProgressInfo;
+  }
+
+  public onChangeStudentsYear(year: string) {
+    let yearIndex = this.response!.infoPerYear.findIndex(info => info.year == year);
+    this.studentsProfile = this.response!.infoPerYear[yearIndex].studentsProfile;
   }
 
   // processInfo(courseInfo: CourseInfo): Array<ProcessedInfo>{

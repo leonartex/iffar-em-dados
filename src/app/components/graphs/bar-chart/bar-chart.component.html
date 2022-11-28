@@ -1,9 +1,18 @@
+<ng-template #thenBlock>
+    <div class="no-data">
+        <span>Dados ausentes ou não encontrados</span>
+        <span class="emdash">&#8212;</span>
+    </div>
+</ng-template>
+<ng-template #elseBlock>
+    <canvas baseChart 
+        [data]="barChartData" 
+        [options]="barChartOptions"
+        [type]="barChartType">
+    </canvas>
+</ng-template>
 <div class="barchart">
-    <div class="chartWrapper" [style.height]="height+'px'" [style.width]="width">
-        <canvas [width]="width" [height]="height" baseChart 
-            [data]="barChartData" 
-            [options]="barChartOptions"
-            [type]="barChartType">
-        </canvas>
+    <div class="chartWrapper">
+        <div *ngIf="isEmpty; then thenBlock else elseBlock"></div>
     </div>
 </div>

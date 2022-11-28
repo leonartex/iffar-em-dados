@@ -1,4 +1,5 @@
 import { Component, OnChanges, Input, Output, EventEmitter} from '@angular/core';
+import { StringHelperService } from 'src/app/services/string-helper.service';
 import { ProjectsInfo } from 'src/app/shared/model/api/projectsInfo.model';
 import { BarChartData } from 'src/app/shared/model/barChartData.model';
 import { Card } from 'src/app/shared/model/card.model';
@@ -20,8 +21,11 @@ export class ProjectsInfoComponent implements OnChanges {
 
   public projects: ProcessedProjectsInfo = new ProcessedProjectsInfo;
 
-
-  constructor() { }
+  public stringHelperService;
+  
+  constructor() {
+    this.stringHelperService = new StringHelperService();
+  }
 
   ngOnChanges(): void {
     this.projects.cards = this.mountMainCards(this.projectsInfo);
@@ -127,7 +131,7 @@ export class ProjectsInfoComponent implements OnChanges {
     let projectsFlat = projectsToFlat.flat(1);
 
     //Crio a lista de labels (tipos de projetos)
-    projectsByTypeChart.labels = [...new Set(projectsFlat.map(project => project.type))];
+    projectsByTypeChart.labels = [...new Set(projectsFlat.map(project => this.stringHelperService.portugueseTitleCase(project.type)))];
 
     //Agora crio o dataset
     projectsByTypeChart.datasets[0] = {
@@ -138,7 +142,7 @@ export class ProjectsInfoComponent implements OnChanges {
 
     //E depois preencho com os valores
     for (let label of projectsByTypeChart.labels) {
-      let projects = projectsFlat.filter(project => project.type == label);
+      let projects = projectsFlat.filter(project => this.stringHelperService.portugueseTitleCase(project.type) == label);
 
       let projectNumbers = projects.reduce((total, current) => total += current.total, 0);
 
@@ -160,7 +164,7 @@ export class ProjectsInfoComponent implements OnChanges {
     console.log(knowledgeAreas);
 
     //Crio a lista de labels (lista de áreas do conhecimento)
-    projectsByTypeChart.labels = [...new Set(knowledgeAreas.map(kA => kA.description))];
+    projectsByTypeChart.labels = [...new Set(knowledgeAreas.map(kA => this.stringHelperService.portugueseTitleCase(kA.description)))];
 
     //Agora crio o dataset
     projectsByTypeChart.datasets[0] = {
@@ -171,7 +175,7 @@ export class ProjectsInfoComponent implements OnChanges {
 
     //E depois preencho com os valores
     for (let label of projectsByTypeChart.labels) {
-      let projects = knowledgeAreas.filter(kA => kA.description == label);
+      let projects = knowledgeAreas.filter(kA => this.stringHelperService.portugueseTitleCase(kA.description) == label);
 
       let projectNumbers = projects.reduce((total, current) => total += current.projects, 0);
 
