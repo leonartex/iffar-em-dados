@@ -63,9 +63,9 @@ export class ProjectsInfoComponent implements OnChanges {
       let projectNumbers = projectsFlat.reduce((total, current) => total += current.total, 0)
 
       //Calculo o total de membros de projetos
-      let projectMembers = projectsFlat.reduce((total, current) => 
-        total += current.members.reduce((cTotal, cCurrent) => cTotal += cCurrent),
-      0)
+      // let projectMembers = projectsFlat.reduce((total, current) => 
+      //   total += current.members.reduce((cTotal, cCurrent) => cTotal += cCurrent),
+      // 0)
 
       developedProjectsCard.value = projectNumbers
     }
@@ -79,9 +79,9 @@ export class ProjectsInfoComponent implements OnChanges {
     else {
       let projectNumbers = learningProjects.reduce((total, current) => total += current.total, 0);
 
-      let projectMembers = learningProjects.reduce((total, current) => 
-        total += current.members.reduce((cTotal, cCurrent) => cTotal += cCurrent),
-      0)
+      // let projectMembers = learningProjects.reduce((total, current) => 
+      //   total += current.members.reduce((cTotal, cCurrent) => cTotal += cCurrent),
+      // 0)
 
       learningProjectsCard.value = projectNumbers
     }
@@ -95,9 +95,9 @@ export class ProjectsInfoComponent implements OnChanges {
     else {
       let projectNumbers = researchProjects.reduce((total, current) => total += current.total, 0);
 
-      let projectMembers = researchProjects.reduce((total, current) => 
-        total += current.members.reduce((cTotal, cCurrent) => cTotal += cCurrent),
-      0)
+      // let projectMembers = researchProjects.reduce((total, current) => 
+      //   total += current.members.reduce((cTotal, cCurrent) => cTotal += cCurrent),
+      // 0)
 
       researchProjectsCard.value = projectNumbers
     }
@@ -111,9 +111,9 @@ export class ProjectsInfoComponent implements OnChanges {
     else {
       let projectNumbers = extensionProjects.reduce((total, current) => total += current.total, 0);
 
-      let projectMembers = extensionProjects.reduce((total, current) => 
-        total += current.members.reduce((cTotal, cCurrent) => cTotal += cCurrent),
-      0)
+      // let projectMembers = extensionProjects.reduce((total, current) => 
+      //   total += current.members.reduce((cTotal, cCurrent) => cTotal += cCurrent),
+      // 0)
 
       extensionProjectsCard.value = projectNumbers
     }

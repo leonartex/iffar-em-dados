@@ -3,8 +3,9 @@
     grid-template-columns: 1fr 1fr;
 
     .gender{
-        app-doughnut-chart{
-            height: 100px;
+        >div{
+            width: 50%;
+            margin: auto;
         }
     }
 }

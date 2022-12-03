@@ -1,10 +1,10 @@
-<div>
+<div id="units-map-component">
     <h2>Nossas unidades</h2>
     <div class="units-container">
         <div class="units-list">
             <div>
-                <ul>
-                    <li *ngFor="let unit of unitsData" [ngClass]="unit.type">
+                <ul id="units-list">
+                    <!-- <li *ngFor="let unit of unitsData" [ngClass]="unit.type">
                         <a routerLink="{{unit.city.cityName | string}}">
                         <span *ngIf="unit.type == 'campus'">
                             Campus
@@ -14,7 +14,7 @@
                         </span>
                         
                         {{unit.city.cityName}}</a>
-                    </li>
+                    </li> -->
                 </ul>
             </div>
         </div>

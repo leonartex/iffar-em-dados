@@ -1,0 +1,59 @@
+#units-map-component {
+    .units-list-li {
+        border-bottom: 1px solid rgba($color: #000000, $alpha: 0.2);
+        padding: 5px;
+        transition: all .2s;
+
+        &.selected, &:hover, &:focus, &:active {
+            background-color: rgb(243, 243, 243);
+            padding-top: 10px;
+            padding-bottom: 10px;
+            font-weight: 500;
+            font-size: 1.35rem;;
+            // color: white;
+
+            a{
+                border-bottom: 0.15em solid $iffar-green-even-darker;
+            }
+        }
+    }
+
+    .units-map {
+        stroke: #205E3B;
+        stroke-width: 10;
+        stroke-linecap: round;
+        fill: #297F3E;
+    }
+
+    .city-pin {
+        fill: white;
+        stroke: #0E3B43;
+        stroke-width: 10;
+        stroke-linecap: round;
+        r: 10;
+
+        transition: all .2s;
+        cursor: pointer;
+
+        &.rectory{
+            cursor: default;
+        }
+    }
+
+    .city-pin.rectory .city-pin{
+        fill: $iffar-red;
+        stroke: $iffar-red;
+    }
+
+    .city:hover .city-pin,
+    .city:focus .city-pin, 
+    .city:active .city-pin, 
+    .city.selected .city-pin{
+        fill: white;
+        stroke: $iffar-red;
+        stroke-width: 15;
+        stroke-linecap: round;
+        r: 13;
+        z-index: 99;
+    }
+}

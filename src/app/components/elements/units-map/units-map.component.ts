@@ -2,6 +2,8 @@ import { Component, OnInit, Input } from '@angular/core';
 import { Card } from 'src/app/shared/model/card.model';
 import * as d3 from 'd3';
 import * as turf from '@turf/turf';
+import { StringHelperService } from 'src/app/services/string-helper.service';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -10,6 +12,7 @@ import * as turf from '@turf/turf';
   styleUrls: ['./units-map.component.scss']
 })
 export class UnitsMapComponent implements OnInit {
+  public stringHelperService = new StringHelperService();
 
   @Input() unitsData: any;
   @Input() mapData: any;
@@ -28,17 +31,18 @@ export class UnitsMapComponent implements OnInit {
     .scale(this.scale)                       // This is like the zoom
     .translate([this.width / 2, this.height / 2])
 
-  constructor() { }
+  constructor(private router: Router) { }
 
   ngOnInit(): void {
     this.units = this.unitsData;
     this.cards = this.mountCards();
+    this.unitsList();
     this.createSvg();
     this.drawMap();
     this.drawUnits();
   }
 
-  private mountCards(){
+  private mountCards() {
     let cards: Array<Card> = [];
 
     let totalCampi = new Card();
@@ -47,6 +51,47 @@ export class UnitsMapComponent implements OnInit {
     cards.push(totalCampi);
 
     return cards;
+  }
+
+  private unitsList() {
+    d3.select('#units-list')
+      .selectAll('li')
+      .data(this.unitsData)
+      .join('li')
+      .on('mouseover', (ev, unit) => this.unitHighlightOnMap(unit))
+      .on('mouseout', (ev, unit) => this.unitHighlightOnMap(null))
+      .on('focus', (ev, unit) => this.unitHighlightOnMap(unit))
+      .on('focusout', (ev, unit) => this.unitHighlightOnMap(null))
+      .attr('class', (unit: any) => unit.type)
+      .classed('units-list-li', true)
+      .append('a')
+        .attr('href', (unit: any) => this.unitLink(unit))
+        .text((unit: any) => this.unitName(unit))
+        .on('focus', (ev, unit) => this.unitHighlightOnMap(unit))
+        .on('focusout', (ev, unit) => this.unitHighlightOnMap(null))
+
+  }
+
+  private unitLink(unit: any): string {
+    return '/' + this.stringHelperService.urlFriendly(unit.city.cityName);
+  }
+
+  private unitName(unit: any): string {
+    let type: string;
+    switch (unit.type) {
+      case 'campus':
+        type = 'Campus';
+        break;
+      case 'advanced-campus':
+        type = 'Campus Avançado';
+        break;
+      case 'rectory':
+        type = 'Reitoria';
+        break;
+      default:
+        type = '';
+    }
+    return `${type} ${unit.city.cityName}`;
   }
 
   private createSvg(): void {
@@ -73,18 +118,15 @@ export class UnitsMapComponent implements OnInit {
       .attr("d", d3.geoPath()
         .projection(this.projection)
       )
-      .style("stroke", "#205E3B")
-      .style("stroke-width", "10")
-      .style("stroke-linecap", "round")
-      .style("fill", "#297F3E")
+      .classed('units-map', true)
 
   }
 
   private drawUnits() {
     this.svg.append('g')
       .classed('cities', true);
-      this.drawCitiesMap();
-      this.drawUnitsCoords();
+    this.drawCitiesMap();
+    this.drawUnitsCoords();
   }
 
   private drawCitiesMap() {
@@ -93,28 +135,57 @@ export class UnitsMapComponent implements OnInit {
       .data(this.unitsData)
       .join("g")
       .classed('city', true)
-      // .selectAll("path")
-      // .data((unit: any) => [unit.location.geojson])
-      // .join("path")
-      // .attr("d", d3.geoPath()
-      //   .projection(this.projection)
-      // )
+    // .selectAll("path")
+    // .data((unit: any) => [unit.location.geojson])
+    // .join("path")
+    // .attr("d", d3.geoPath()
+    //   .projection(this.projection)
+    // )
   }
   private drawUnitsCoords() {
     this.svg.select('.cities')
       .selectAll('.city')
       .data(this.unitsData)
       .join(".city")
-      // .on('mouseover', (ev: any, unit: any) => unitHighlightOnList(unit))
-      // .on('mouseout', (ev: any, unit: any) => unitHighlightOnList(null))
+      .on('mouseover', (ev: any, unit: any) => this.unitHighlightOnList(unit))
+      .on('mouseout', (ev: any, unit: any) => this.unitHighlightOnList(null))
+      .on('focus', (ev: any, unit: any) => this.unitHighlightOnList(unit))
+      .on('focusout', (ev: any, unit: any) => this.unitHighlightOnList(null))
+      .on('click', (ev: any, unit: any) => this.goToUnit(unit))
+      .on('keypress', (ev: any, unit: any) => this.goToUnit(unit, ev))
       .append("circle")
       .attr("cx", (d: any) => this.projection([d.location.coordinates.lon, d.location.coordinates.lat])![0])
       .attr("cy", (d: any) => this.projection([d!.location.coordinates.lon, d.location.coordinates.lat])![1])
-      .style("fill", "white")
-      .style("stroke", "#0E3B43")
-      .style("stroke-width", "10")
-      .style("stroke-linecap", "round")
-      .attr("r", 10)
+      .classed('city-pin', true)
+  }
+
+  //https://stackoverflow.com/questions/19919708/change-class-of-one-element-when-hover-over-another-element-d3
+  private unitHighlightOnMap(unit: any) {
+    this.svg.select('.cities')
+      .selectAll('.city')
+      .classed('selected', function (mapUnit: any, index: number) {
+        console.log(mapUnit);
+        if (!unit)
+          return false;
+        return mapUnit.apiId == unit.apiId;
+      })
+  }
+
+  private unitHighlightOnList(unit: any) {
+    d3.select('#units-list')
+      .selectAll('li')
+      .classed('selected', function (listUnit:any, index) {
+        console.log(listUnit);
+        if (!unit)
+          return false;
+
+        return listUnit.apiId == unit.apiId;
+      })
+  }
+
+  private goToUnit(unit: any, ev?: any){
+    if(ev == undefined || ev.key == 'Enter')
+      this.router.navigate([this.unitLink(unit)]);
   }
 
 }

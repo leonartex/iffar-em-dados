@@ -3,7 +3,9 @@
         <div>
             <h2>Perfil dos estudantes</h2>
         </div>
-        <app-content-bar (changeYear)="onChangeYear($event)" [years]="years"></app-content-bar>
+        <div>
+            <app-content-bar (changeYear)="onChangeYear($event)" [years]="years"></app-content-bar>
+        </div>
     </div>
     <div class="graphs">
         <div>
@@ -16,7 +18,9 @@
         </div>
         <div class="gender">
             <h3>Distribuição por gênero</h3>
-            <app-doughnut-chart [data]="genderDistribution"></app-doughnut-chart>
+            <div>
+                <app-doughnut-chart [data]="genderDistribution"></app-doughnut-chart>
+            </div>
         </div>
         <div>
             <h3>Distribuição por faixa etária</h3>
