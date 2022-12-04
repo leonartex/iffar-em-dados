@@ -21,3 +21,6 @@
         </div>
     </div>
 </div>
+<div *ngIf="apiError != null">
+    <app-general-error [errorCode]="apiError.status" [messages]="apiErrorMessages"></app-general-error>
+</div>

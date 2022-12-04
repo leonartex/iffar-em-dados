@@ -1,0 +1,164 @@
+@import 'src/sass/_variables';
+
+.header {
+    position: relative;
+
+    background-color: $iffar-green-darker;
+    color: white;
+}
+
+.main-relative {
+    position: relative;
+    z-index: 10;
+
+    height: 100vh;
+}
+
+.background {
+    position: absolute;
+    z-index: 1;
+
+    color: $iffar-green;
+
+    width: 100%;
+    height: 100%;
+}
+
+/**
+ * Configuração da distribuição de items
+**/
+.main {
+    $padding: 3vh;
+    padding: $padding;
+    min-height: 100vh - ($padding * 2);
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    .error-message {
+        flex-grow: 1;
+    }
+}
+
+/**
+ * Configuração da logo no topo da tela
+**/
+.logo-container {
+    display: flex;
+    flex-direction: row;
+
+    .logo {
+        width: 12rem;
+        display: relative;
+        z-index: 50;
+    }
+
+    .logo-title {
+        display: flex;
+        align-items: center;
+
+        >div {
+            position: relative;
+            z-index: 10;
+            left: -20px;
+        }
+
+        h1 {
+            display: flex;
+            flex-direction: column;
+
+            background-color: $iffar-green-darker;
+            padding: 15px;
+            border-radius: 10px;
+        }
+    }
+
+    $font-size: 3.5rem;
+    span:nth-child(1) {
+        font-size: $font-size;
+        font-weight: 700;
+    }
+    span:nth-child(2) {
+        font-size: $font-size * 0.8;
+        font-weight: 500;
+    }
+}
+
+/**
+ *  Configurações da mensagem de erro
+**/
+.error-message {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+
+    $font-size: 7.5rem;
+    >span:nth-child(1) {
+        font-size: $font-size * 0.3;
+        font-weight: 500;
+        
+        span{
+            background-color: $iffar-green-darker;
+            border-radius: $font-size * 0.3 * 0.1;
+            padding: $font-size * 0.05;
+        }
+    }
+
+    >span:nth-child(2) {
+        font-size: $font-size;
+        font-weight: 700;
+        
+        span{
+            background-color: $iffar-green-darker;
+            border-radius: $font-size * 0.1;
+            padding: $font-size * 0.05;
+        }
+    }
+
+    p{
+        font-size: 1.5rem;
+        padding: 1rem;
+        border-radius: 0.25rem;
+        background-color: $iffar-green-darker;
+    }
+}
+
+/**
+ *  Configurações do botão de retorno
+**/
+.card-button{
+    font-size: 1.5rem;
+    padding: 1rem;
+    cursor: pointer;
+
+    color: white;
+    >span{
+        border-bottom: 0.15em solid white;
+    }
+
+    background-color: $iffar-green;
+    border: $iffar-green solid 0.4rem;
+    border-radius: 0.25rem;
+
+    transition: all 0.125s ease-in;
+
+    &:hover, &:active, &:focus{
+        background-color: $iffar-green-even-darker;
+    }
+}
+
+/**
+ *  Configurações do background
+**/
+.background {
+    font-family: $font-family;
+
+    tspan {
+        fill: $iffar-green;
+        font-size: 1.5rem;
+    }
+}

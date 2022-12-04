@@ -25,6 +25,7 @@ import { CourseDetailingComponent } from './components/elements/course-detailing
 import { StringHelperPipe } from './shared/pipes/StringHelper.pipe';
 
 import { HttpCacheInterceptorModule } from '@ngneat/cashew';
+import { GeneralErrorComponent } from './components/errors/general-error/general-error.component';
 
 @NgModule({
   declarations: [
@@ -46,7 +47,8 @@ import { HttpCacheInterceptorModule } from '@ngneat/cashew';
     UnitsMapComponent,
     CourseDetailingComponent,
     
-    StringHelperPipe
+    StringHelperPipe,
+          GeneralErrorComponent
   ],
   imports: [
     BrowserModule,

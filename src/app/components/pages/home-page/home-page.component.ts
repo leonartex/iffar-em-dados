@@ -10,6 +10,9 @@ import { Card } from 'src/app/shared/model/card.model';
   styleUrls: ['./home-page.component.scss']
 })
 export class HomePageComponent implements OnInit {
+  public apiError: any = null;
+  public apiErrorMessages: Array<string> = [];
+
   private apiUrl: string = 'http://localhost:3333/api';
   
   public response: HomePageResponse | null = null;
@@ -37,7 +40,8 @@ export class HomePageComponent implements OnInit {
   ngOnInit(): void {
     this.http.get<HomePageResponse>(`${this.apiUrl}/iffar`,{
       context: withCache()
-    }).subscribe(res => {
+    }).subscribe(
+      res => {
       console.log(res);
       this.response = res;
 
@@ -60,6 +64,11 @@ export class HomePageComponent implements OnInit {
       console.log(this.response.infoPerYear[0].projectsInfo);
 
       this.header = this.mountHeader(res);
+    },
+    error => {
+      console.log(error)
+      this.apiError = error;
+      this.mountErrorMessage();
     })
   }
 
@@ -100,6 +109,10 @@ export class HomePageComponent implements OnInit {
       background,
       cards
     }
+  }
+
+  public mountErrorMessage(){
+    this.apiErrorMessages.push('Erro ao processar os dados');
   }
 
   public onChangeCoursesInfoYear(year: string){

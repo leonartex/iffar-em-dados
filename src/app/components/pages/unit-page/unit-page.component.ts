@@ -14,6 +14,9 @@ import { withCache } from '@ngneat/cashew';
   styleUrls: ['./unit-page.component.scss']
 })
 export class UnitPageComponent implements OnInit {
+  public apiError: any = null;
+  public apiErrorMessages: Array<string> = [];
+
   public stringHelperService = new StringHelperService();
 
   private campus: string;
@@ -46,7 +49,8 @@ export class UnitPageComponent implements OnInit {
   ngOnInit(): void {
     this.http.get<UnitPageResponse>(`${this.apiUrl}/unit/${this.stringHelper.urlFriendly(this.campus)}`, {
       context: withCache()
-    }).subscribe(res => {
+    }).subscribe(
+      res => {
         console.log(res);
         this.response = res;
 
@@ -72,6 +76,11 @@ export class UnitPageComponent implements OnInit {
         this.studentsProfile = this.response.infoPerYear[0].studentsProfile;
 
         console.log(this.response.infoPerYear[0].projectsInfo);
+      },
+      error => {
+        console.log(error)
+        this.apiError = error;
+        this.mountErrorMessage();
       })
   }
 
@@ -120,6 +129,10 @@ export class UnitPageComponent implements OnInit {
       background,
       cards
     }
+  }
+
+  public mountErrorMessage(){
+    this.apiErrorMessages.push('Unidade de ensino não encontrada ou não existente');
   }
 
   public onChangeCoursesInfoYear(year: string) {
