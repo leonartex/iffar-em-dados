@@ -6,14 +6,15 @@
 
         &.selected, &:hover, &:focus, &:active {
             background-color: rgb(243, 243, 243);
-            padding-top: 10px;
-            padding-bottom: 10px;
-            font-weight: 500;
+            // padding-top: 10px;
+            // padding-bottom: 10px;
+            font-weight: 600;
             font-size: 1.35rem;;
             // color: white;
 
             a{
                 border-bottom: 0.15em solid $iffar-green-even-darker;
+                background-image: linear-gradient(120deg,$iffar-green-even-darker,$iffar-green-even-darker);
             }
         }
     }
@@ -34,13 +35,10 @@
 
         transition: all .2s;
         cursor: pointer;
-
-        &.rectory{
-            cursor: default;
-        }
     }
 
     .city-pin.rectory .city-pin{
+        cursor: default;
         fill: $iffar-red;
         stroke: $iffar-red;
     }
