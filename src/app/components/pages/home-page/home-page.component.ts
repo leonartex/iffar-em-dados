@@ -1,4 +1,5 @@
 import { HttpClient } from '@angular/common/http';
+import { withCache } from '@ngneat/cashew';
 import { Component, OnInit } from '@angular/core';
 import { HomePageResponse } from 'src/app/shared/model/api/responses/homePageResponse.model';
 import { Card } from 'src/app/shared/model/card.model';
@@ -34,8 +35,9 @@ export class HomePageComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.http.get<HomePageResponse>(`${this.apiUrl}/iffar`)
-    .subscribe(res => {
+    this.http.get<HomePageResponse>(`${this.apiUrl}/iffar`,{
+      context: withCache()
+    }).subscribe(res => {
       console.log(res);
       this.response = res;
 

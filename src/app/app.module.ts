@@ -24,6 +24,8 @@ import { UnitsMapComponent } from './components/elements/units-map/units-map.com
 import { CourseDetailingComponent } from './components/elements/course-detailing/course-detailing.component';
 import { StringHelperPipe } from './shared/pipes/StringHelper.pipe';
 
+import { HttpCacheInterceptorModule } from '@ngneat/cashew';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -50,7 +52,8 @@ import { StringHelperPipe } from './shared/pipes/StringHelper.pipe';
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    NgChartsModule
+    NgChartsModule,
+    HttpCacheInterceptorModule.forRoot()
   ],
   providers: [
     { provide: NgChartsConfiguration, useValue: { generateColors: true }}

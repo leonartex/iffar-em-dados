@@ -13,6 +13,7 @@ import StudentsProfile from 'src/app/shared/model/api/studentsProfile.model';
 import { BarChartData } from 'src/app/shared/model/barChartData.model';
 import { Card } from 'src/app/shared/model/card.model';
 import { ProcessedInfo } from 'src/app/shared/model/processedInfo.model';
+import { withCache } from '@ngneat/cashew';
 
 @Component({
   selector: 'app-course-page',
@@ -51,8 +52,9 @@ export class CoursePageComponent implements OnInit {
   }
 
   ngOnInit(){
-    this.http.get<CoursePageResponse>(`${this.apiUrl}/course/${this.courseId}`)
-    .subscribe(res => {
+    this.http.get<CoursePageResponse>(`${this.apiUrl}/course/${this.courseId}`,{
+      context: withCache()
+    }).subscribe(res => {
       console.log(res);
       this.response = res;
 

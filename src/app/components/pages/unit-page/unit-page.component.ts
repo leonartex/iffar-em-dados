@@ -6,6 +6,7 @@ import { Location } from '@angular/common';
 import { StringHelperService } from 'src/app/services/string-helper.service';
 import { UnitPageResponse } from 'src/app/shared/model/api/responses/unitPageResponse.model';
 import { Card } from 'src/app/shared/model/card.model';
+import { withCache } from '@ngneat/cashew';
 
 @Component({
   selector: 'app-unit-page',
@@ -43,8 +44,9 @@ export class UnitPageComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.http.get<UnitPageResponse>(`${this.apiUrl}/unit/${this.stringHelper.urlFriendly(this.campus)}`)
-      .subscribe(res => {
+    this.http.get<UnitPageResponse>(`${this.apiUrl}/unit/${this.stringHelper.urlFriendly(this.campus)}`, {
+      context: withCache()
+    }).subscribe(res => {
         console.log(res);
         this.response = res;
 
