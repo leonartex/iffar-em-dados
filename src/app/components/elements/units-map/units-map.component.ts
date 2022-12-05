@@ -24,8 +24,8 @@ export class UnitsMapComponent implements OnInit {
   private center: [number, number] = [-54.5, -30];
   private scale = 4200;
   private margin = 20;
-  private width = 725 - (this.margin * 2);
-  private height = 550 - (this.margin * 2);
+  private width = 525;
+  private height = 525 ;
   private projection = d3.geoMercator()
     .center(this.center)                // GPS of location to zoom on
     .scale(this.scale)                       // This is like the zoom
@@ -35,6 +35,7 @@ export class UnitsMapComponent implements OnInit {
 
   ngOnInit(): void {
     this.units = this.unitsData;
+    this.center = [this.mapData.coordinates.lon, this.mapData.coordinates.lat]
     this.cards = this.mountCards();
     this.unitsList();
     this.createSvg();
@@ -97,10 +98,10 @@ export class UnitsMapComponent implements OnInit {
   private createSvg(): void {
     this.svg = d3.select("figure#map")
       .append("svg")
-      .attr("width", this.width + (this.margin * 2))
+      .attr("width", 'auto')
       .attr("height", this.height + (this.margin * 2))
       .append("g")
-      .attr("transform", "translate(" + this.margin + "," + this.margin + ")")
+      //.attr("transform", "translate(" + this.margin + "," + this.margin + ")")
       .attr("preserveAspectRatio", "xMidYMid meet");
   }
 

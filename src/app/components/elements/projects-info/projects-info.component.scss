@@ -2,3 +2,17 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
 }
+
+@media (max-width: 992px){
+    .graphs{
+        display: grid;
+        grid-template-columns: 1fr;
+    }
+}
+
+// @media (max-width: 768x){
+//     .graphs{
+//         display: grid;
+//         grid-template-columns: 1fr;
+//     }
+// }

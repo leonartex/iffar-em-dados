@@ -9,3 +9,15 @@
         }
     }
 }
+
+@media (max-width: 992px){
+    .graphs{
+        grid-template-columns: 1fr;
+    
+        .gender{
+            >div{
+                width: 100%;
+            }
+        }
+    }
+}

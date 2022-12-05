@@ -45,7 +45,7 @@ h5, .h5{
     display: flex;
     flex-wrap: wrap;
 
-    justify-content: flex-start;
+    justify-content: center;
 }
 
 /**
@@ -131,3 +131,23 @@ a:hover, a:focus, a:active{
     Estilização do mapa das unidades (por causa do D3, tem que ser feito no styles global)
 */
 @import 'src/sass/units-map';
+@media (max-width: 992px){
+    .cards-1-3{
+        display: grid;
+        grid-template-columns: 1fr;
+    }
+}
+@media (max-width: 768px){
+    /**
+    *  Estilização da barra de conteúdo (filtro de ano) com os cabeçalhos
+    **/ 
+    .content-bar-h{
+        flex-direction: column;
+
+        :nth-child(2){
+            max-width: 100%;
+        }
+
+        margin-bottom: 10px;
+    }
+}

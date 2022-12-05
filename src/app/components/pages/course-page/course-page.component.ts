@@ -106,7 +106,11 @@ export class CoursePageComponent implements OnInit {
     title.push("Campus "+res.courseDetailing.city);
     // ['Bacharelado em', 'Sistemas de Informação', 'Campus São Borja'];
 
-    let breadcrumb: Array<any> = [{label: 'Início', url: '/'}, {label: "Campus "+res.courseDetailing.city, url: '/sao-borja/'}, {label: res.courseDetailing.apiNameFiltered, url: '/sao-borja/'}];
+    let breadcrumb: Array<any> = [
+      {label: 'Início', url: '/'}, 
+      {label: "Campus "+res.courseDetailing.city, url: `/${this.stringHelperService.urlFriendly(res.courseDetailing.city)}`}, 
+      {label: res.courseDetailing.apiNameFiltered, url: `/${this.stringHelperService.urlFriendly(res.courseDetailing.city)}/${this.stringHelperService.urlFriendly(res.courseDetailing.apiNameFiltered)}/${res.courseDetailing.apiId}`}
+    ];
 
     let background = res.courseComponents;
 
@@ -127,7 +131,15 @@ export class CoursePageComponent implements OnInit {
   }
   
   public mountErrorMessage(){
-    this.apiErrorMessages.push('Curso não encontrado, não existente ou erro ocasionado nos dados abertos da instituição');
+    switch(this.apiError.status){
+      case 404:
+        this.apiErrorMessages.push('Curso não encontrado, não existente ou erro ocasionado nos dados abertos da instituição');
+        break;
+      case 500:
+        this.apiErrorMessages.push('Erro ao processar os dados do curso');        
+        break;
+    }
+    
   }
 
   public onChangeEntryInfoYear(year: string) {

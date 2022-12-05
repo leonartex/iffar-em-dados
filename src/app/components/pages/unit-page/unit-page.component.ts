@@ -106,7 +106,10 @@ export class UnitPageComponent implements OnInit {
     }
     title.push(res.units[0].city.cityName);
 
-    let breadcrumb: Array<any> = [{ label: 'Início', url: '/' }, { label: res.units[0].city.cityName, url: '/sao-borja/' }];
+    let breadcrumb: Array<any> = [
+      { label: 'Início', url: '/' }, 
+      { label: res.units[0].city.cityName, url: `/${this.stringHelperService.urlFriendly(res.units[0].city.cityName)}`}
+    ];
 
     let background = res.infoPerYear[0].coursesInfo.map(course => course.apiNameFiltered);
 
@@ -132,7 +135,14 @@ export class UnitPageComponent implements OnInit {
   }
 
   public mountErrorMessage(){
-    this.apiErrorMessages.push('Unidade de ensino não encontrada ou não existente');
+      switch(this.apiError.status){
+        case 404:
+          this.apiErrorMessages.push('Unidade de ensino não encontrada ou não existente');
+          break;
+        case 500:
+          this.apiErrorMessages.push('Erro ao processar os dados da unidade de ensino');        
+          break;
+      }
   }
 
   public onChangeCoursesInfoYear(year: string) {

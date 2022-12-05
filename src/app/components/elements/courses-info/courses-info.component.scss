@@ -24,8 +24,57 @@
         margin-top: 10px;
 
         >div{
-            display: flex;
-            flex-wrap: wrap;
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+            gap: 10px;
+        }
+    }
+}
+
+@media (max-width: 992px) {
+    .info-layout{
+        grid-template-columns: 1fr;
+    
+        .graphs{
+            grid-template-columns: 1fr 2fr;
+            gap: 20px;
+        }
+    }
+
+    .courses{    
+        >div{
+            >div{
+                grid-template-columns: 1fr 1fr 1fr;
+            }
+        }
+    }
+}
+
+@media (max-width: 768px){
+    .info-layout{
+        grid-template-columns: 1fr;
+    
+        .graphs{
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+    }
+
+    .courses{    
+        >div{
+            >div{
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+    }
+}
+
+@media (max-width: 576px) {
+    .courses{    
+        >div{
+            >div{
+                grid-template-columns: 1fr;
+            }
         }
     }
 }

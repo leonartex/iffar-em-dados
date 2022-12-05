@@ -5,7 +5,6 @@
     flex-direction: row;
 
     .units-list {
-        flex-grow: 1;
 
         font-size: 1.25rem;
 
@@ -23,6 +22,10 @@
     }
 
     .map{
+        flex-grow: 1;
+        figure{
+            margin: auto;
+        }
     }
 
     .cards{
@@ -30,5 +33,36 @@
         display: flex;
         justify-content: center;
         align-items: center;
+    }
+}
+
+@media (max-width: 768px){
+    .units-container {
+        flex-direction: column;
+    
+        .units-list {
+            margin-top: 20px;
+            order: 3;    
+            >div {
+                width: 100%;
+            }
+    
+            li{
+                border-bottom: 1px solid rgba($color: #000000, $alpha: 0.2);
+                padding: 5px;
+            }
+        }
+    
+        .map{
+            width: 100%;
+            order: 2;
+            margin-top: 20px;
+        }
+    
+        .cards{
+            order: 1;
+            margin-left: 0;
+            flex-direction: row;
+        }
     }
 }

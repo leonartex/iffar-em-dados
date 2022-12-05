@@ -194,6 +194,78 @@
     }
 }
 
-@media (max-width: 768px){
+@media (max-width: 992px) {
+    .container{
+        padding-left: 1vw;    
+        padding-right: 1vw;
+    }
+    .home{
+        .title{
+            .logo{
+                width: 15.625rem;
+            }
+            .logo-title{
+                >div{
+                    left: -15px;
+                }
+            }
 
+            $font-size: 5rem;
+            span:nth-child(1){
+                font-size: $font-size;
+                font-weight: 700;
+            }
+            span:nth-child(2){
+                font-size: $font-size * 0.8;
+                font-weight: 500;
+            }
+        }
+    }
+}
+
+@media (max-width: 768px){
+    .container{
+    
+        display: flex;
+        flex-direction: column;
+    }
+
+    //Para a página inicial
+    .home{
+        .title{
+            .logo{
+                width: 14.5rem;
+            }
+            .logo-title{
+                >div{
+                    left: -15px;
+                }
+            }
+
+            $font-size: 4rem;
+            span:nth-child(1){
+                font-size: $font-size;
+                font-weight: 700;
+            }
+            span:nth-child(2){
+                font-size: $font-size * 0.8;
+                font-weight: 500;
+            }
+        }
+    }
+
+    /**
+    *  Configurações da lista de cards (o recomendado é colocar só 3)
+    **/
+    .cards{
+        margin-top: 20px;
+        flex-direction: row;
+
+        app-card{
+            margin-right: 10px;
+        }
+        app-card:last-of-type{
+            margin-right: 0;
+        }
+    }
 }

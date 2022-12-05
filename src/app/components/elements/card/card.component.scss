@@ -98,7 +98,7 @@ $percent: ($height * 0.1);
 /*Configurações do card do tipo only-title*/
 .card.only-title{
     .main-content {
-        width: 23vw;
+        width: 100%;
         min-height: 2rem;
         border-radius: 0.2rem; //Tem que ser 10% da largura ou altura (quadrado é tudo igual), se for um retângulo, preciso escolher a largura ou altura para fazer isso
     
