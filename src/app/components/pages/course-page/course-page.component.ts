@@ -69,8 +69,6 @@ export class CoursePageComponent implements OnInit {
           this.location.replaceState(`${urlCampusCity}/${urlCourseName}/${this.courseId}`);
         }
 
-        this.header = this.mountHeader(res);
-
         this.courseDetailing = res.courseDetailing;
 
         this.response.infoPerYear.sort((infoA, infoB) => {
@@ -79,6 +77,8 @@ export class CoursePageComponent implements OnInit {
           return (yA < yB) ? -1 : (yA > yB) ? 1 : 0;
         }).reverse();
         this.years = [...new Set(this.response.infoPerYear.map(infoP => infoP.year))];
+
+        this.header = this.mountHeader(res);
 
         this.entryAndProgressInfo = this.response.infoPerYear[0].entryAndProgressInfo;
         this.studentsProfile = this.response.infoPerYear[0].studentsProfile;
@@ -117,8 +117,14 @@ export class CoursePageComponent implements OnInit {
     let cards: Array<Card> = []
 
     let studentsCard = new Card;
+    studentsCard.reverse = true;
     studentsCard.description = "Alunos matriculados";
     studentsCard.value = res.infoPerYear[0].entryAndProgressInfo.rateCards.enrolledStudents;
+    if(studentsCard.value == undefined || studentsCard.value == null){
+      studentsCard.description = "Alunos ingressantes";
+      studentsCard.value = res.infoPerYear[0].entryAndProgressInfo.rateCards.apiIncomingStudents;
+    }
+
     cards.push(studentsCard); 
 
     return {

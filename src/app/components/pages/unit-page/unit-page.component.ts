@@ -60,14 +60,14 @@ export class UnitPageComponent implements OnInit {
           this.location.replaceState(`${urlCampusCity}`);
         }
 
-        this.header = this.mountHeader(res);
-
         this.response.infoPerYear.sort((infoA, infoB) => {
           let yA: string = infoA.year.toString().toUpperCase();
           let yB: string = infoB.year.toString().toUpperCase();
           return (yA < yB) ? -1 : (yA > yB) ? 1 : 0;
         }).reverse();
         this.years = [...new Set(this.response.infoPerYear.map(infoP => infoP.year))];
+
+        this.header = this.mountHeader(res);
 
         this.coursesInfo = this.response.infoPerYear[0].coursesInfo;
         this.projectsInfo = this.response.infoPerYear[0].projectsInfo;
@@ -116,13 +116,19 @@ export class UnitPageComponent implements OnInit {
     let cards: Array<Card> = []
 
     let coursesCard = new Card;
+    coursesCard.reverse = true;
     coursesCard.description = "Cursos ofertados";
     coursesCard.value = res.infoPerYear[0].coursesInfo.length;
     cards.push(coursesCard);
 
     let studentsCard = new Card;
+    studentsCard.reverse = true;
     studentsCard.description = "Alunos matriculados";
     studentsCard.value = res.infoPerYear[0].entryAndProgressInfo.rateCards.enrolledStudents;
+    if(studentsCard.value == undefined || studentsCard.value == null){
+      studentsCard.description = "Alunos ingressantes";
+      studentsCard.value = res.infoPerYear[0].entryAndProgressInfo.rateCards.apiIncomingStudents;
+    }
     cards.push(studentsCard);
 
     return {

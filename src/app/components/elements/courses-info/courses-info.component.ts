@@ -119,6 +119,12 @@ export class CoursesInfoComponent implements OnChanges {
           type: 'default'
         });
       }
+      
+      addonList.sort((courseA, courseB) => {
+        let cA = courseA.description!.toString().toUpperCase();
+        let cB = courseB.description!.toString().toUpperCase();
+        return (cA < cB) ? -1 : (cA > cB) ? 1 : 0;
+      })
       offeredCoursesCard.additionalInfo = addonList;
     }
 
@@ -294,7 +300,6 @@ export class CoursesInfoComponent implements OnChanges {
       let cA = courseA.filterProperty!.toString().toUpperCase();
       let cB = courseB.filterProperty!.toString().toUpperCase();
       return (cA < cB) ? -1 : (cA > cB) ? 1 : 0;
-
     })
 
     //Retorno a lista de cursos
@@ -308,7 +313,6 @@ export class CoursesInfoComponent implements OnChanges {
       let cA = courseA.description!.toString().toUpperCase();
       let cB = courseB.description!.toString().toUpperCase();
       return (cA < cB) ? -1 : (cA > cB) ? 1 : 0;
-
     })
   }
 

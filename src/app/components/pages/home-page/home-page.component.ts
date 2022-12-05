@@ -88,18 +88,25 @@ export class HomePageComponent implements OnInit {
     let cards: Array<Card> = []
 
     let campiCard = new Card;
+    campiCard.reverse = true;
     campiCard.description = "Unidades de ensino";
     campiCard.value = 11;
     cards.push(campiCard); 
 
     let coursesCard = new Card;
+    coursesCard.reverse = true;
     coursesCard.description = "Cursos ofertados";
     coursesCard.value = res.infoPerYear[0].coursesInfo.length;
     cards.push(coursesCard);
 
     let studentsCard = new Card;
+    studentsCard.reverse = true;
     studentsCard.description = "Alunos matriculados";
     studentsCard.value = res.infoPerYear[0].entryAndProgressInfo.rateCards.enrolledStudents;
+    if(studentsCard.value == undefined || studentsCard.value == null){
+      studentsCard.description = "Alunos ingressantes";
+      studentsCard.value = res.infoPerYear[0].entryAndProgressInfo.rateCards.apiIncomingStudents;
+    }
     cards.push(studentsCard); 
 
     return {
