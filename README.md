@@ -6,7 +6,7 @@ Este repositório faz parte do projeto IFFar em Dados e representa o seu fronten
 
 ## Monografia
 
-A monografia "IFFar em Dados: proposta de portal para transparência institucional" tratou sobre os aspectos da transparência, que afeta a comunicação, e a oferta de informações da instituição. O ponto central do trabalho foi em demonstrar que informações pertinentes sobre o IFFar podem ser ofertadas de maneiras mais práticas apenas com os dados que a própria instituição já deve oferecer por lei, porém, o mesmo também vale para qualquer outra instituição de ensino pública. Para a quem interessar, a monografia está em `docs/monografia.pdf`, contudo, [também poderá ser consultada em meu GitHub Pages pessoal](http://leonartex.fsdfsfsfs/iffar-em-dados/monografia).
+A monografia "IFFar em Dados: proposta de portal para transparência institucional" tratou sobre os aspectos da transparência, que afeta a comunicação, e a oferta de informações da instituição. O ponto central do trabalho foi em demonstrar que informações pertinentes sobre o IFFar podem ser ofertadas de maneiras mais práticas apenas com os dados que a própria instituição já deve oferecer por lei, porém, o mesmo também vale para qualquer outra instituição de ensino pública. Para a quem interessar, a monografia está em `docs/monografia.pdf`, contudo, [também poderá ser consultada em meu GitHub Pages pessoal](https://leonartex.github.io/iffar-em-dados/monografia).
 
 ## As informações do IFFar em Dados
 
